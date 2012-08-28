@@ -1,0 +1,46 @@
+This plugin is a 90% clone of Andy Wokula's tinymode (vimscript #2223). 
+It takes a different approach that hopefully causes fewer problems. 
+tinymode actually creates maps to do its job, tinykeymap only 
+creates maps for the entry sequence and uses the |getchar()| function to 
+handle further input.
+
+This plugin lets users define "temporary keymaps", a.k.a. tinykeymaps, 
+with the |tinykeymap#EnterMap()| function. Users can define a map to 
+activate a tinykeymap. Users can then use single key shortcuts to 
+trigger commands defined with |tinykeymap#Map()|. Pressing an undefined 
+key or <Esc>, deactivates the tinykeymap.
+
+Example usage: Define a tinykeymap to make it easier to ...
+
+    - operate on windows
+    - operate on tabs
+    - operate on text
+
+Example definition for a "tabs" tinykeymap: >
+
+    call tinykeymap#EnterMap('tabs', 'gt', {'name': 'Tabs mode'})
+    call tinykeymap#Map('tabs', 'n', 'tabnew') 
+    call tinykeymap#Map('tabs', 't', 'norm! gt') 
+    call tinykeymap#Map('tabs', 'T', 'norm! gT') 
+    call tinykeymap#Map("tabs", "0", "tabfirst")
+    call tinykeymap#Map("tabs", "$", "tablast")
+    call tinykeymap#Map("tabs", "n", "tabnew")
+    call tinykeymap#Map("tabs", "c", "tabclose")
+
+Differences to tinymode:
+
+    - tinykeymaps and maps may have options (optional)
+    - tinykeymaps can be buffer-local
+    - dealing with [count] is easier (if a map contains "<count>", this 
+      placeholder is replaced with the current [count], i.e. a 
+      previously entered number; otherwise the expression is evaluated 
+      [count] times)
+    - avoid a certain misleading error message
+
+
+-----------------------------------------------------------------------
+
+Status:  Experimental
+Install: See http://github.com/tomtom/vimtlib/blob/master/INSTALL.TXT
+See http://github.com/tomtom for related plugins.
+
