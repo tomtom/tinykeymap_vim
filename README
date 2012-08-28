@@ -16,7 +16,8 @@ Example usage: Define a tinykeymap to make it easier to ...
     - operate on tabs
     - operate on text
 
-Example definition for a "tabs" tinykeymap: >
+Example definition for a "tabs" tinykeymap (heavily based on Andy 
+Wokula's tabs mode for tinymode): >
 
     call tinykeymap#EnterMap('tabs', 'gt', {'name': 'Tabs mode'})
     call tinykeymap#Map('tabs', 'n', 'tabnew') 
@@ -24,8 +25,10 @@ Example definition for a "tabs" tinykeymap: >
     call tinykeymap#Map('tabs', 'T', 'norm! gT') 
     call tinykeymap#Map("tabs", "0", "tabfirst")
     call tinykeymap#Map("tabs", "$", "tablast")
-    call tinykeymap#Map("tabs", "n", "tabnew")
     call tinykeymap#Map("tabs", "c", "tabclose")
+
+Example use of the above tinykeymap: Pressing gt3n0 will create 3 new tabs and 
+then select to the first one.
 
 Differences to tinymode:
 
