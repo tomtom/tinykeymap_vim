@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-08-28.
-" @Revision:    174
+" @Revision:    175
 
 if !exists('g:tinykeymap#timeout')
     let g:tinykeymap#timeout = 3000   "{{{2
@@ -22,7 +22,7 @@ let s:oid = "\<esc>options"
 " Load pre-defined tinykeymaps.
 " [maps] is either a single name or a list of names.
 "
-" Run>
+" Run >
 "     :echo globpath(&rtp, 'autoload/tinykeymap/*.vim')
 " for a list of available tinykeymaps.
 function! tinykeymap#Load(maps) "{{{3

@@ -1,0 +1,117 @@
+*tinykeymap.txt*    Tiny, temporary keymaps
+                    Author: Tom Link, micathom at gmail com
+
+This plugin is a 90% clone of Andy Wokula's tinymode (vimscript #2223). 
+It takes a different approach that hopefully causes fewer problems. 
+tinymode actually creates maps to do its job, tinykeymap only 
+creates maps for the entry sequence and uses the |getchar()| function to 
+handle further input.
+
+This plugin lets users define "temporary keymaps", a.k.a. tinykeymaps, 
+with the |tinykeymap#EnterMap()| function. Users can define a map to 
+activate a tinykeymap. Users can then use single key shortcuts to 
+trigger commands defined with |tinykeymap#Map()|. Pressing an undefined 
+key or <Esc>, deactivates the tinykeymap.
+
+Example usage: Define a tinykeymap to make it easier to ...
+
+    - operate on windows
+    - operate on tabs
+    - operate on text
+
+Example definition for a "tabs" tinykeymap (heavily based on Andy 
+Wokula's tabs mode for tinymode): >
+
+    call tinykeymap#EnterMap('tabs', 'gt', {'name': 'Tabs mode'})
+    call tinykeymap#Map('tabs', 'n', 'tabnew') 
+    call tinykeymap#Map('tabs', 't', 'norm! gt') 
+    call tinykeymap#Map('tabs', 'T', 'norm! gT') 
+    call tinykeymap#Map("tabs", "0", "tabfirst")
+    call tinykeymap#Map("tabs", "$", "tablast")
+    call tinykeymap#Map("tabs", "n", "tabnew")
+    call tinykeymap#Map("tabs", "c", "tabclose")
+
+Differences to tinymode:
+
+    - tinykeymaps and maps may have options (optional)
+    - tinykeymaps can be buffer-local
+    - dealing with [count] is easier (if a map contains "<count>", this 
+      placeholder is replaced with the current [count], i.e. a 
+      previously entered number; otherwise the expression is evaluated 
+      [count] times)
+    - avoid a certain misleading error message
+
+
+-----------------------------------------------------------------------
+Install~
+
+In order to install the vba, open the vba file in VIM and type: >
+
+    :so %
+
+See :help vimball for details.
+
+Also available via git: http://github.com/tomtom/tinykeymap_vim/
+
+
+========================================================================
+Contents~
+
+        g:tinykeymaps_default ............. |g:tinykeymaps_default|
+        g:tinykeymap#timeout .............. |g:tinykeymap#timeout|
+        g:tinykeymap#resolution ........... |g:tinykeymap#resolution|
+        tinykeymap#Load ................... |tinykeymap#Load()|
+        tinykeymap#EnterMap ............... |tinykeymap#EnterMap()|
+        tinykeymap#Map .................... |tinykeymap#Map()|
+
+
+========================================================================
+plugin/tinykeymap.vim~
+
+                                                    *g:tinykeymaps_default*
+g:tinykeymaps_default          (default: ["windows", "tabs"])
+    A list tinykeymaps that should be loaded on startup.
+
+
+========================================================================
+autoload/tinykeymap.vim~
+
+                                                    *g:tinykeymap#timeout*
+g:tinykeymap#timeout           (default: 3000)
+
+                                                    *g:tinykeymap#resolution*
+g:tinykeymap#resolution        (default: "200m")
+
+                                                    *tinykeymap#Load()*
+tinykeymap#Load(maps)
+    Load pre-defined tinykeymaps.
+    [maps] is either a single name or a list of names.
+
+    Run >
+        :echo globpath(&rtp, 'autoload/tinykeymap/*.vim')
+<   for a list of available tinykeymaps.
+
+                                                    *tinykeymap#EnterMap()*
+tinykeymap#EnterMap(name, map, ?options={})
+    If you press [map], the tinykeymap [name] becomes effective.
+
+    Pressing <Esc> or an undefined key, causes the tinykeymap to stop. If 
+    an undefined keymap is pressed right after [map], [map][key] is queued 
+    for processing via |feedkeys()|.
+
+    Options may contain the following keys:
+      mode ... A map mode (see |maparg()|)
+      buffer ... Make the tinykeymap buffer-local
+
+                                                    *tinykeymap#Map()*
+tinykeymap#Map(name, key, expr, ?options={})
+    When the tinykeymap [name] is in effect, pressing [key] causes [expr] 
+    to be |:execute|d.
+
+    Options may contain the following keys:
+      exit ... If true, exit the current tinykeymap after evaluating 
+               [expr]
+
+
+
+vim:tw=78:fo=tcq2:isk=!-~,^*,^|,^":ts=8:ft=help:norl:
