@@ -3,9 +3,9 @@
 " @GIT:         http://github.com/tomtom/
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
-" @Last Change: 2012-08-30.
-" @Revision:    18
-" GetLatestVimScripts: 0 0 :AutoInstall: tinykeymap.vim
+" @Last Change: 2012-08-31.
+" @Revision:    19
+" GetLatestVimScripts: 4199 0 :AutoInstall: tinykeymap.vim
 
 if &cp || exists("loaded_tinykeymap")
     finish
