@@ -3,23 +3,33 @@
 " @Website:     <+WWW+>
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-30.
-" @Last Change: 2012-08-30.
-" @Revision:    24
+" @Last Change: 2012-08-31.
+" @Revision:    36
 
-call tinykeymap#EnterMap("undo", g:mapleader ."u", {
-            \ 'name': 'undo mode',
-            \ 'message': 'printf("cur: %s, time: %s", undotree().seq_cur, strftime("%c", undotree().time_cur))'
-            \ })
+if !exists('tinykeymap#undo#options')
+    let tinykeymap#undo#options = {
+                \ 'name': 'undo mode',
+                \ 'message': 'printf("cur: %s, time: %s", undotree().seq_cur, strftime("%c", undotree().time_cur))'
+                \ }
+    if exists(':UndotreeToggle')
+        let tinykeymap#undo#options.start = 'if bufwinnr("undotree_") == -1 | UndotreeToggle | endif'
+        let tinykeymap#undo#options.stop = 'if bufwinnr("undotree_") != -1 | UndotreeToggle | endif'
+        let tinykeymap#undo#options.after = 'doautocmd CursorMoved'
+    endif
+endif
+
+
+call tinykeymap#EnterMap("undo", g:mapleader ."u", tinykeymap#undo#options)
 call tinykeymap#Map('undo', 'u', 'undo')
-call tinykeymap#Map('undo', '<Left>', 'undo')
+call tinykeymap#Map('undo', '<Down>', 'undo')
 call tinykeymap#Map('undo', 'U', 'norm! U')
 call tinykeymap#Map('undo', 'r', 'redo')
-call tinykeymap#Map('undo', '<Right>', 'redo')
+call tinykeymap#Map('undo', '<Up>', 'redo')
 call tinykeymap#Map('undo', '<Space>', 'undolist | call tinykeymap#PressEnter()')
 call tinykeymap#Map('undo', '+', 'norm! g+')
-call tinykeymap#Map('undo', '<Down>', 'norm! g+')
+call tinykeymap#Map('undo', '<Left>', 'norm! g+')
 call tinykeymap#Map('undo', '-', 'norm! g-')
-call tinykeymap#Map('undo', '<Up>', 'norm! g-')
+call tinykeymap#Map('undo', '<Right>', 'norm! g-')
 call tinykeymap#Map('undo', 'e', 'earlier <count1>')
 call tinykeymap#Map('undo', 's', 'earlier <count1>s')
 call tinykeymap#Map('undo', 'm', 'earlier <count1>m')
