@@ -32,7 +32,11 @@ function! tinykeymap#Load(maps) "{{{3
         let maps = [a:maps]
     endif
     for map in maps
-        exec printf('runtime! autoload/tinykeymap/%s.vim', map)
+        " TLogVAR map
+        for file in split(globpath(&rtp, 'autoload/tinykeymap/'. map .'.vim'), '\n')
+            " TLogVAR file
+            exec 'source' file
+        endfor
     endfor
 endf
 

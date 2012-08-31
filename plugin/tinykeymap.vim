@@ -3,8 +3,8 @@
 " @GIT:         http://github.com/tomtom/
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
-" @Last Change: 2012-08-28.
-" @Revision:    12
+" @Last Change: 2012-08-30.
+" @Revision:    18
 " GetLatestVimScripts: 0 0 :AutoInstall: tinykeymap.vim
 
 if &cp || exists("loaded_tinykeymap")
@@ -18,7 +18,10 @@ set cpo&vim
 
 if !exists('g:tinykeymaps_default')
     " A list tinykeymaps that should be loaded on startup.
-    let g:tinykeymaps_default = ["windows", "tabs"]   "{{{2
+    " The list may also include |wildcards|. A value of "*" make 
+    " tinykeymap load all available tinykeymaps.
+    " See also |tinykeymap#Load()|.
+    let g:tinykeymaps_default = ["*"]   "{{{2
 endif
 
 augroup TinyKeyMap
