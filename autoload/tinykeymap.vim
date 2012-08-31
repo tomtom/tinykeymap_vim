@@ -211,6 +211,7 @@ function! s:EnterMap(name) "{{{3
     let ruler = &ruler
     let showcmd = &showcmd
     echo
+    let before = get(dict[s:oid], 'before', '')
     let after = get(dict[s:oid], 'after', '')
     let start = get(dict[s:oid], 'start', '')
     if !empty(start)
@@ -254,7 +255,7 @@ function! s:EnterMap(name) "{{{3
                     let s:count = s:count[0 : -2]
                 endif
             else
-                let status = s:ProcessKey(a:name, key)
+                let status = s:ProcessKey(a:name, key, before)
                 " TLogVAR status
                 if status > 0
                     let time = 0
@@ -333,7 +334,7 @@ function! tinykeymap#PressEnter() "{{{3
 endf
 
 
-function! s:ProcessKey(name, key) "{{{3
+function! s:ProcessKey(name, key, before) "{{{3
     " TLogVAR a:name, a:key
     let cont = 1
     let key = s:KeyChar(a:key)
@@ -365,6 +366,9 @@ function! s:ProcessKey(name, key) "{{{3
         let expr = substitute(expr, '\V<lt>', '<', 'g')
         " TLogVAR iterations, expr
         if !empty(expr)
+            if !empty(a:before)
+                exec a:before
+            endif
             for i in range(iterations)
                 exec expr
             endfor
