@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-08-31.
-" @Revision:    304
+" @Revision:    317
 
 
 if !exists('g:tinykeymap#conflict')
@@ -187,12 +187,21 @@ function! s:EnterMap(name) "{{{3
     let message0 = "-- tinykeymap ". msg ." (help <F1>)%s --"
     " endif
     let messenger = get(dict[s:oid], 'message', '')
+    if empty(messenger)
+        let laststatus = -1
+        let statusline = ""
+    else
+        let laststatus = &laststatus
+        set laststatus=2
+        let statusline = &l:statusline
+    endif
     let pos = getpos('.')
     let first_run = 1
     let time = 0
     let s:count = ''
     let ruler = &ruler
     let showcmd = &showcmd
+    echo
     let start = get(dict[s:oid], 'start', '')
     if !empty(start)
         exec start
@@ -209,14 +218,17 @@ function! s:EnterMap(name) "{{{3
                 endif
                 if !empty(messenger)
                     let mapmsg = eval(messenger)
-                    if !empty(mapmsg)
-                        let message .= ' '. mapmsg
+                    " if !empty(mapmsg)
+                    "     let message .= ' '. mapmsg
+                    " endif
+                    if strlen(mapmsg) >= &columns
+                        let mapmsg = mapmsg[0 : &columns - 4] . '...'
                     endif
+                    let &l:statusline = mapmsg
                 endif
                 if strlen(message) > maxlen
                     let message = message[0 : maxlen - 4] . '...'
                 endif
-                echo
                 redraw
                 echohl ModeMsg
                 echo message
@@ -256,7 +268,6 @@ function! s:EnterMap(name) "{{{3
                     break
                 endif
             endif
-            redraw
         endwh
         " echo "tinykeymaps: Leave ". msg
         echo ""
@@ -268,6 +279,10 @@ function! s:EnterMap(name) "{{{3
         endif
         let &ruler = ruler
         let &showcmd = showcmd
+        if laststatus >= 0
+            let &laststatus = laststatus
+            let &l:statusline = statusline
+        endif
     endtry
     return rv
 endf

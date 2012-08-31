@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
 " @Last Change: 2012-08-31.
-" @Revision:    73
+" @Revision:    74
 
 call tinykeymap#EnterMap("buffers", g:mapleader ."b", {
             \ 'message': 'tinykeymap#buffers#List(g:tinykeymap#buffers#idx)',
@@ -68,6 +68,6 @@ endf
 
 
 function! tinykeymap#buffers#List(start_idx) "{{{3
-    return join(s:List(a:start_idx, 1, g:tinykeymap#buffers#filter), ', ')
+    return "buffers: ". join(s:List(a:start_idx, 1, g:tinykeymap#buffers#filter), ', ')
 endf
 
