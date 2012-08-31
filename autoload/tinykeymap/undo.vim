@@ -4,11 +4,13 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-30.
 " @Last Change: 2012-08-31.
-" @Revision:    37
+" @Revision:    38
 
 
 if !exists('g:tinykeymap#undo#map')
     " Map leader for the "undo" tinykeymap.
+    " If the undotree plugin is available, |:UndotreeToggle| will be 
+    " called when entering the undo tinykeymap.
     let g:tinykeymap#undo#map = g:mapleader ."u"   "{{{2
 endif
 
