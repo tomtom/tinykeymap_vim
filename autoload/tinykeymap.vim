@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-08-31.
-" @Revision:    317
+" @Revision:    324
 
 
 if !exists('g:tinykeymap#conflict')
@@ -68,6 +68,7 @@ endf
 "       will be shortened if necessary
 "   start ... An expression |:execute|d before entering the map
 "   stop ... An expression |:execute|d after leaving the map
+"   after ... An execute |:execute|d after processing a character
 function! tinykeymap#EnterMap(name, map, ...) "{{{3
     let options = a:0 >= 1 ? a:1 : {}
     let mode = get(options, 'mode', 'n')
@@ -202,6 +203,7 @@ function! s:EnterMap(name) "{{{3
     let ruler = &ruler
     let showcmd = &showcmd
     echo
+    let after = get(dict[s:oid], 'after', '')
     let start = get(dict[s:oid], 'start', '')
     if !empty(start)
         exec start
@@ -245,6 +247,9 @@ function! s:EnterMap(name) "{{{3
                 if status > 0
                     let time = 0
                     let first_run = 0
+                    if !empty(after)
+                        exec after
+                    endif
                 elseif status < 0
                     let char = s:KeyChar(key)
                     if first_run
