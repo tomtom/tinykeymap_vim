@@ -3,10 +3,16 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
 " @Last Change: 2012-08-31.
-" @Revision:    7
+" @Revision:    8
+
+if !exists('g:tinykeymap#tabs#map')
+    " Map leader for the "tabs" tinykeymap.
+    let g:tinykeymap#tabs#map = "gt"   "{{{2
+endif
+
 
 " Based on Andy Wokulas's tabs mode for tinymode.
-call tinykeymap#EnterMap('tabs', 'gt', {'name': 'tabs mode'})
+call tinykeymap#EnterMap('tabs', g:tinykeymap#tabs#map, {'name': 'tabs mode'})
 call tinykeymap#Map('tabs', 'n', 'tabnew') 
 call tinykeymap#Map('tabs', 't', 'norm! gt') 
 call tinykeymap#Map('tabs', 'T', 'norm! gT') 

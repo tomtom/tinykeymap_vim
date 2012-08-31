@@ -4,7 +4,14 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-30.
 " @Last Change: 2012-08-31.
-" @Revision:    36
+" @Revision:    37
+
+
+if !exists('g:tinykeymap#undo#map')
+    " Map leader for the "undo" tinykeymap.
+    let g:tinykeymap#undo#map = g:mapleader ."u"   "{{{2
+endif
+
 
 if !exists('tinykeymap#undo#options')
     let tinykeymap#undo#options = {
@@ -19,7 +26,7 @@ if !exists('tinykeymap#undo#options')
 endif
 
 
-call tinykeymap#EnterMap("undo", g:mapleader ."u", tinykeymap#undo#options)
+call tinykeymap#EnterMap("undo", g:tinykeymap#undo#map, tinykeymap#undo#options)
 call tinykeymap#Map('undo', 'u', 'undo')
 call tinykeymap#Map('undo', '<Down>', 'undo')
 call tinykeymap#Map('undo', 'U', 'norm! U')

@@ -3,9 +3,15 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
 " @Last Change: 2012-08-31.
-" @Revision:    100
+" @Revision:    102
 
-call tinykeymap#EnterMap("buffers", g:mapleader ."b", {
+if !exists('g:tinykeymap#buffers#map')
+    " Map leader for the "buffers" tinykeymap.
+    let g:tinykeymap#buffers#map = g:mapleader ."b"   "{{{2
+endif
+
+
+call tinykeymap#EnterMap("buffers", g:tinykeymap#buffers#map, {
             \ 'message': 'tinykeymap#buffers#List(g:tinykeymap#buffers#idx)',
             \ 'start': 'let g:tinykeymap#buffers#idx = 1 | let g:tinykeymap#buffers#filter = ""',
             \ })
@@ -30,6 +36,7 @@ call tinykeymap#Map('buffers', '/', 'let g:tinykeymap#buffers#filter = input("Fi
             \ {'desc': 'Prioritize buffers matching a regexp'})
 
 
+" :nodoc:
 function! tinykeymap#buffers#Buffer(...) "{{{3
     if a:0 >= 1
         let nr = a:1
@@ -43,6 +50,7 @@ function! tinykeymap#buffers#Buffer(...) "{{{3
 endf
 
 
+" :nodoc:
 function! tinykeymap#buffers#Shift(n) "{{{3
     let buflist = s:List(1, 0, "")
     let max = len(buflist)
@@ -87,6 +95,7 @@ function! s:List(start_idx, rotate, filter) "{{{3
 endf
 
 
+" :nodoc:
 function! tinykeymap#buffers#List(start_idx) "{{{3
     return "buffers: ". join(s:List(a:start_idx, 1, g:tinykeymap#buffers#filter), ', ')
 endf
