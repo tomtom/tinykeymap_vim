@@ -28,8 +28,10 @@ Wokula's tabs mode for tinymode): >
     call tinykeymap#Map('tabs', 'T', 'norm! gT') 
     call tinykeymap#Map("tabs", "0", "tabfirst")
     call tinykeymap#Map("tabs", "$", "tablast")
-    call tinykeymap#Map("tabs", "n", "tabnew")
     call tinykeymap#Map("tabs", "c", "tabclose")
+
+Example use of the above tinykeymap: Pressing gt3n0 will create 3 new tabs and 
+then select to the first one.
 
 Differences to tinymode:
 
@@ -58,26 +60,44 @@ Also available via git: http://github.com/tomtom/tinykeymap_vim/
 Contents~
 
         g:tinykeymaps_default ............. |g:tinykeymaps_default|
+        g:tinykeymap#conflict ............. |g:tinykeymap#conflict|
         g:tinykeymap#timeout .............. |g:tinykeymap#timeout|
         g:tinykeymap#resolution ........... |g:tinykeymap#resolution|
         tinykeymap#Load ................... |tinykeymap#Load()|
         tinykeymap#EnterMap ............... |tinykeymap#EnterMap()|
         tinykeymap#Map .................... |tinykeymap#Map()|
+        tinykeymap#PressEnter ............. |tinykeymap#PressEnter()|
+        tinykeymap#buffers#Buffer ......... |tinykeymap#buffers#Buffer()|
+        tinykeymap#buffers#Shift .......... |tinykeymap#buffers#Shift()|
+        tinykeymap#buffers#List ........... |tinykeymap#buffers#List()|
 
 
 ========================================================================
 plugin/tinykeymap.vim~
 
                                                     *g:tinykeymaps_default*
-g:tinykeymaps_default          (default: ["windows", "tabs"])
+g:tinykeymaps_default          (default: ["*"])
     A list tinykeymaps that should be loaded on startup.
+    The list may also include |wildcards|. A value of "*" make 
+    tinykeymap load all available tinykeymaps.
+    See also |tinykeymap#Load()|.
 
 
 ========================================================================
 autoload/tinykeymap.vim~
 
+                                                    *g:tinykeymap#conflict*
+g:tinykeymap#conflict          (default: 0)
+    Conflict resolution if a map is already defined (see 
+    |tinykeymap#EnterMap|):
+      0 ... Don't create a lead map
+      1 ... Don't create a lead map and display a message
+      2 ... Create a new lead map and display a message
+      3 ... Create a new lead map
+      4 ... Throw an error
+
                                                     *g:tinykeymap#timeout*
-g:tinykeymap#timeout           (default: 3000)
+g:tinykeymap#timeout           (default: 5000)
 
                                                     *g:tinykeymap#resolution*
 g:tinykeymap#resolution        (default: "200m")
@@ -102,15 +122,52 @@ tinykeymap#EnterMap(name, map, ?options={})
     Options may contain the following keys:
       mode ... A map mode (see |maparg()|)
       buffer ... Make the tinykeymap buffer-local
+      message ... An expression that returns a message string (the string 
+          will be shortened if necessary
+      start ... An expression |:execute|d before entering the map
+      stop ... An expression |:execute|d after leaving the map
+      after ... An execute |:execute|d after processing a character
 
                                                     *tinykeymap#Map()*
 tinykeymap#Map(name, key, expr, ?options={})
     When the tinykeymap [name] is in effect, pressing [key] causes [expr] 
     to be |:execute|d.
 
+    [key] must not be <Esc>, <Del> or <F1>. If [key] is a numeric value, 
+    such a map could cause conflicts when using a [count].
+
+    The following keys are handled by tinykeymaps and can/should not be 
+    used in maps since they may cause conflicts.
+
+      Numeric value ... Add to [count]
+      <Esc> ... Exit a tinykeymap
+      <Del> ... Remove the last digit from [count]
+      <F1>  ... Display some help
+
+    Any occurence of "<count>" in [expr] is replaced with the current 
+    [count]. Occurences of "<lt>" are replaced with "<".
+    "<count1>" works similar but a value of 1 is inserted anyway.
+
     Options may contain the following keys:
+      name ... The key's name (to be displayed in the help)
       exit ... If true, exit the current tinykeymap after evaluating 
-               [expr]
+              [expr]
+
+                                                    *tinykeymap#PressEnter()*
+tinykeymap#PressEnter()
+
+
+========================================================================
+autoload/tinykeymap/buffers.vim~
+
+                                                    *tinykeymap#buffers#Buffer()*
+tinykeymap#buffers#Buffer(...)
+
+                                                    *tinykeymap#buffers#Shift()*
+tinykeymap#buffers#Shift(n)
+
+                                                    *tinykeymap#buffers#List()*
+tinykeymap#buffers#List(start_idx)
 
 
 
