@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-08-31.
-" @Revision:    324
+" @Revision:    332
 
 
 if !exists('g:tinykeymap#conflict')
@@ -109,8 +109,16 @@ endf
 " When the tinykeymap [name] is in effect, pressing [key] causes [expr] 
 " to be |:execute|d.
 "
-" [key] must not be <Esc> or <F1>. If [key] is a numeric value, such a 
-" map could cause conflicts when using a [count].
+" [key] must not be <Esc>, <Del> or <F1>. If [key] is a numeric value, 
+" such a map could cause conflicts when using a [count].
+"
+" The following keys are handled by tinykeymaps and can/should not be 
+" used in maps since they may cause conflicts.
+"
+"   Numeric value ... Add to [count]
+"   <Esc> ... Exit a tinykeymap
+"   <Del> ... Remove the last digit from [count]
+"   <F1>  ... Display some help
 "
 " Any occurence of "<count>" in [expr] is replaced with the current 
 " [count]. Occurences of "<lt>" are replaced with "<".
@@ -241,6 +249,10 @@ function! s:EnterMap(name) "{{{3
                 break
             elseif type(key) == 1 && key == "\<F1>"
                 call s:Help(dict)
+            elseif type(key) == 1 && key == "\<Del>"
+                if !empty(s:count)
+                    let s:count = s:count[0 : -2]
+                endif
             else
                 let status = s:ProcessKey(a:name, key)
                 " TLogVAR status
