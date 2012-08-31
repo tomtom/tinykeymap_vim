@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-08-31.
-" @Revision:    332
+" @Revision:    338
 
 
 if !exists('g:tinykeymap#conflict')
@@ -69,6 +69,10 @@ endf
 "   start ... An expression |:execute|d before entering the map
 "   stop ... An expression |:execute|d after leaving the map
 "   after ... An execute |:execute|d after processing a character
+"
+" CAUTION: Currently only normal mode maps (mode == "n") are supported. 
+" It is possible to define other type of maps but the behaviour is 
+" untested/undefined.
 function! tinykeymap#EnterMap(name, map, ...) "{{{3
     let options = a:0 >= 1 ? a:1 : {}
     let mode = get(options, 'mode', 'n')

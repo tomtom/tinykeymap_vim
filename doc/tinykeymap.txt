@@ -136,6 +136,10 @@ tinykeymap#EnterMap(name, map, ?options={})
       stop ... An expression |:execute|d after leaving the map
       after ... An execute |:execute|d after processing a character
 
+    CAUTION: Currently only normal mode maps (mode == "n") are supported. 
+    It is possible to define other type of maps but the behaviour is 
+    untested/undefined.
+
                                                     *tinykeymap#Map()*
 tinykeymap#Map(name, key, expr, ?options={})
     When the tinykeymap [name] is in effect, pressing [key] causes [expr] 
