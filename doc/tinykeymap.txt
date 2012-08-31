@@ -33,6 +33,13 @@ Wokula's tabs mode for tinymode): >
 Example use of the above tinykeymap: Pressing gt3n0 will create 3 new tabs and 
 then select to the first one.
 
+tinykeymap comes with the following pre-defined tinykeymaps:
+
+    tabs    gt        :: Operate on tabs
+    windows <C-W>     :: Operate on windows
+    buffers <Leader>b :: Operate on buffers
+    undo    <Leader>u :: Operate on the |undo| tree
+
 Differences to tinymode:
 
     - tinykeymaps and maps may have options (optional)
@@ -67,9 +74,10 @@ Contents~
         tinykeymap#EnterMap ............... |tinykeymap#EnterMap()|
         tinykeymap#Map .................... |tinykeymap#Map()|
         tinykeymap#PressEnter ............. |tinykeymap#PressEnter()|
-        tinykeymap#buffers#Buffer ......... |tinykeymap#buffers#Buffer()|
-        tinykeymap#buffers#Shift .......... |tinykeymap#buffers#Shift()|
-        tinykeymap#buffers#List ........... |tinykeymap#buffers#List()|
+        g:tinykeymap#buffers#map .......... |g:tinykeymap#buffers#map|
+        g:tinykeymap#windows#map .......... |g:tinykeymap#windows#map|
+        g:tinykeymap#undo#map ............. |g:tinykeymap#undo#map|
+        g:tinykeymap#tabs#map ............. |g:tinykeymap#tabs#map|
 
 
 ========================================================================
@@ -160,14 +168,33 @@ tinykeymap#PressEnter()
 ========================================================================
 autoload/tinykeymap/buffers.vim~
 
-                                                    *tinykeymap#buffers#Buffer()*
-tinykeymap#buffers#Buffer(...)
+                                                    *g:tinykeymap#buffers#map*
+g:tinykeymap#buffers#map       (default: g:mapleader ."b")
+    Map leader for the "buffers" tinykeymap.
 
-                                                    *tinykeymap#buffers#Shift()*
-tinykeymap#buffers#Shift(n)
 
-                                                    *tinykeymap#buffers#List()*
-tinykeymap#buffers#List(start_idx)
+========================================================================
+autoload/tinykeymap/windows.vim~
+
+                                                    *g:tinykeymap#windows#map*
+g:tinykeymap#windows#map       (default: "<C-W>")
+    Map leader for the "windows" tinykeymap.
+
+
+========================================================================
+autoload/tinykeymap/undo.vim~
+
+                                                    *g:tinykeymap#undo#map*
+g:tinykeymap#undo#map          (default: g:mapleader ."u")
+    Map leader for the "undo" tinykeymap.
+
+
+========================================================================
+autoload/tinykeymap/tabs.vim~
+
+                                                    *g:tinykeymap#tabs#map*
+g:tinykeymap#tabs#map          (default: "gt")
+    Map leader for the "tabs" tinykeymap.
 
 
 
