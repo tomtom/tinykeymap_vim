@@ -3,13 +3,13 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
 " @Last Change: 2012-08-31.
-" @Revision:    74
+" @Revision:    100
 
 call tinykeymap#EnterMap("buffers", g:mapleader ."b", {
             \ 'message': 'tinykeymap#buffers#List(g:tinykeymap#buffers#idx)',
             \ 'start': 'let g:tinykeymap#buffers#idx = 1 | let g:tinykeymap#buffers#filter = ""',
             \ })
-call tinykeymap#Map('buffers', '<CR>', 'buffer <count>', {'exit': 1})
+call tinykeymap#Map('buffers', '<CR>', 'call tinykeymap#buffers#Buffer(<count>)', {'exit': 1})
 call tinykeymap#Map('buffers', 'd', 'drop <count>', {'exit': 1})
 call tinykeymap#Map('buffers', 'b', 'buffer <count>')
 call tinykeymap#Map('buffers', 's', 'sbuffer <count>')
@@ -27,7 +27,20 @@ call tinykeymap#Map('buffers', '<Left>', 'call tinykeymap#buffers#Shift(-<count1
 call tinykeymap#Map('buffers', '<Right>', 'call tinykeymap#buffers#Shift(<count1>)',
             \ {'desc': 'Rotate list to the left'})
 call tinykeymap#Map('buffers', '/', 'let g:tinykeymap#buffers#filter = input("Filter regexp: ")',
-            \ {'desc': 'Filter list'})
+            \ {'desc': 'Prioritize buffers matching a regexp'})
+
+
+function! tinykeymap#buffers#Buffer(...) "{{{3
+    if a:0 >= 1
+        let nr = a:1
+    else
+        let buflist = s:List(g:tinykeymap#buffers#idx, 1, g:tinykeymap#buffers#filter)
+        let nr = matchstr(get(buflist, 0, ''), '^\d\+')
+    endif
+    if !empty(nr)
+        exec 'buffer' nr
+    endif
+endf
 
 
 function! tinykeymap#buffers#Shift(n) "{{{3
@@ -44,26 +57,33 @@ endf
 
 function! s:List(start_idx, rotate, filter) "{{{3
     let buffers = []
-    let prelude = []
-    let post = []
-    let j = 0
+    let cur_idx = -1
     for i in range(1, bufnr('$'))
         if buflisted(i) && bufloaded(i)
-            let j += 1
             " let bufname = fnamemodify(bufname(i), ':t')
             let bufname = bufname(i)
             let desc = printf('%s %s', i, pathshorten(bufname))
-            if !empty(a:filter) && bufname !~ a:filter
-                call add(post, desc)
-            elseif j >= a:start_idx
-                call add(buffers, desc)
-            elseif a:rotate
-                call add(prelude, desc)
+            if i == bufnr('%')
+                let cur_idx = len(buffers)
             endif
+            call add(buffers, desc)
         endif
     endfor
+    if len(buffers) > 1
+        if cur_idx > 0
+            let buffers = buffers[cur_idx : -1] + buffers[0 : cur_idx - 1]
+        endif
+        if !empty(a:filter)
+            let buffers = filter(copy(buffers), 'v:val =~ a:filter') + 
+                        \ filter(copy(buffers), 'v:val !~ a:filter')
+        endif
+        if a:start_idx > 1
+            let start_idx = a:start_idx - 1
+            let buffers = buffers[start_idx : -1] + buffers[0 : start_idx - 1]
+        endif
+    endif
     " TLogVAR a:start_idx, buffers
-    return buffers + prelude + post
+    return buffers
 endf
 
 
