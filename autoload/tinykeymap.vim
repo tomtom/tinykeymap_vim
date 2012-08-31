@@ -202,7 +202,7 @@ function! s:EnterMap(name) "{{{3
     else
         let laststatus = &laststatus
         set laststatus=2
-        let statusline = &l:statusline
+        let statusline = &statusline
     endif
     let pos = getpos('.')
     let first_run = 1
@@ -234,7 +234,7 @@ function! s:EnterMap(name) "{{{3
                     if strlen(mapmsg) >= &columns
                         let mapmsg = mapmsg[0 : &columns - 4] . '...'
                     endif
-                    let &l:statusline = mapmsg
+                    let &statusline = mapmsg
                 endif
                 if strlen(message) > maxlen
                     let message = message[0 : maxlen - 4] . '...'
@@ -298,7 +298,7 @@ function! s:EnterMap(name) "{{{3
         let &showcmd = showcmd
         if laststatus >= 0
             let &laststatus = laststatus
-            let &l:statusline = statusline
+            let &statusline = statusline
         endif
     endtry
     return rv
