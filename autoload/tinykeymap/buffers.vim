@@ -1,13 +1,12 @@
-" buffers.vim
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
-" @Last Change: 2012-08-31.
-" @Revision:    102
+" @Last Change: 2012-09-07.
+" @Revision:    108
 
 if !exists('g:tinykeymap#buffers#map')
     " Map leader for the "buffers" tinykeymap.
-    let g:tinykeymap#buffers#map = g:mapleader ."b"   "{{{2
+    let g:tinykeymap#buffers#map = g:tinykeymap#mapleader ."b"   "{{{2
 endif
 
 
@@ -97,6 +96,6 @@ endf
 
 " :nodoc:
 function! tinykeymap#buffers#List(start_idx) "{{{3
-    return "buffers: ". join(s:List(a:start_idx, 1, g:tinykeymap#buffers#filter), ', ')
+    return join(s:List(a:start_idx, 1, g:tinykeymap#buffers#filter), ', ')
 endf
 
