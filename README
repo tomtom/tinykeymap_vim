@@ -1,8 +1,8 @@
 This plugin is a 90% clone of Andy Wokula's tinymode (vimscript #2223). 
-It takes a different approach that hopefully causes fewer problems. 
-tinymode actually creates maps to do its job, tinykeymap only 
-creates maps for the entry sequence and uses the |getchar()| function to 
-handle further input.
+It takes a different approach that hopefully avoids certain problems 
+without creating new ones. tinymode actually creates maps to do its job, 
+tinykeymap only creates maps for the entry sequence and uses the 
+|getchar()| function to handle further input.
 
 This plugin lets users define "temporary keymaps", a.k.a. tinykeymaps, 
 with the |tinykeymap#EnterMap()| function. Users can define a map to 
@@ -23,12 +23,34 @@ Wokula's tabs mode for tinymode): >
     call tinykeymap#Map('tabs', 'n', 'tabnew') 
     call tinykeymap#Map('tabs', 't', 'norm! gt') 
     call tinykeymap#Map('tabs', 'T', 'norm! gT') 
-    call tinykeymap#Map("tabs", "0", "tabfirst")
+    call tinykeymap#Map("tabs", "^", "tabfirst")
     call tinykeymap#Map("tabs", "$", "tablast")
     call tinykeymap#Map("tabs", "c", "tabclose")
 
-Example use of the above tinykeymap: Pressing gt3n0 will create 3 new tabs and 
-then select to the first one.
+Example use of the above tinykeymap: E.g. pressing gt3n^c2t will:
+
+    gt ... Enter tabs mode
+    3n ... create 3 new tabs,
+    ^  ... select the first one,
+    c  ... close it, and
+    2t ... move to the second tab on the right.
+
+A tinykeymap is exited (1) by pressing <Esc> or (2) by timeout (see 
+|g:tinykeymap#timeout|).
+
+tinykeymap comes with the following pre-defined tinykeymaps (see 
+|g:tinykeymap#mapleader| and the related g:tinykeymap#*#map variables for how 
+to customize the key binding):
+
+    tabs    gt        :: Operate on tabs
+    windows <C-W>     :: Operate on windows
+    buffers <Leader>b :: Operate on buffers
+    diff    <Leader>d :: Make it easier to work with |diff|s
+    filter  <Leader>f :: Fold lines not matching some pattern (default: word 
+                         under cursor)
+    lines   <Leader>l :: Operate on lines
+    qfl     <Leader>q :: Operate on the |quickfix| list
+    undo    <Leader>u :: Operate on the |undo| tree
 
 Differences to tinymode:
 
@@ -40,6 +62,8 @@ Differences to tinymode:
       [count] times)
     - avoid a certain misleading error message
 
+submode (vimscript #2467) is another package that provides similar 
+functionality.
 
 -----------------------------------------------------------------------
 
