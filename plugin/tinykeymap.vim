@@ -3,8 +3,8 @@
 " @GIT:         http://github.com/tomtom/
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
-" @Last Change: 2012-08-31.
-" @Revision:    19
+" @Last Change: 2012-09-05.
+" @Revision:    24
 " GetLatestVimScripts: 4199 0 :AutoInstall: tinykeymap.vim
 
 if &cp || exists("loaded_tinykeymap")
@@ -14,6 +14,11 @@ let loaded_tinykeymap = 1
 
 let s:save_cpo = &cpo
 set cpo&vim
+
+
+" Activate a tinykeymap defined with |tinykeymap#EnterMap()|.
+command! -nargs=1 -complete=customlist,tinykeymap#Complete Tinykeymap
+            \ call tinykeymap#Call(<q-args>)
 
 
 if !exists('g:tinykeymaps_default')

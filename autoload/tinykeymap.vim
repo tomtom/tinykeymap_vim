@@ -2,8 +2,14 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2012-08-31.
-" @Revision:    338
+" @Last Change: 2012-09-06.
+" @Revision:    499
+
+
+if !exists('g:tinykeymap#mapleader')
+    " The mapleader for some tinykeymaps.
+    let g:tinykeymap#mapleader = mapleader .'m'   "{{{2
+endif
 
 
 if !exists('g:tinykeymap#conflict')
@@ -19,12 +25,31 @@ endif
 
 
 if !exists('g:tinykeymap#timeout')
+    " Stop a tinykeymap after X milliseconds.
+    " If 0, the tinykeymap never stops due to a timeout.
     let g:tinykeymap#timeout = 5000   "{{{2
 endif
 
 
 if !exists('g:tinykeymap#resolution')
+    " Number of milliseconds to sleep when polling for characters.
     let g:tinykeymap#resolution = "200m"   "{{{2
+endif
+
+
+if !exists('g:tinykeymap#message_fmt')
+    " The format string (see |printf()|) for the tinykeymap message. This 
+    " format string must contain 2 %s: The first one is for the map's 
+    " name, the second one for the counter.
+    let g:tinykeymap#message_fmt = "-- %s (help <F1>)%s --"   "{{{2
+endif
+
+
+if !exists('g:tinykeymap#show_message')
+    " Where to show a tinykeymap's message. Possible values:
+    "     cmdline (default value)
+    "     statusline
+    let g:tinykeymap#show_message = 'cmdline'   "{{{2
 endif
 
 
@@ -69,6 +94,10 @@ endf
 "   start ... An expression |:execute|d before entering the map
 "   stop ... An expression |:execute|d after leaving the map
 "   after ... An execute |:execute|d after processing a character
+"   timeout ... Map-specific value for |g:tinykeymap#timeout|
+"   resolution ... Map-specific value for |g:tinykeymap#resolution|
+"   unknown_key ... Function to handle unknown keys
+"   disable_count ... If true, numeric values are handled as characters
 "
 " CAUTION: Currently only normal mode maps (mode == "n") are supported. 
 " It is possible to define other type of maps but the behaviour is 
@@ -91,7 +120,7 @@ function! tinykeymap#EnterMap(name, map, ...) "{{{3
     endif
     let buffer_local = get(options, 'buffer', 0) ? '<buffer>' : ''
     let cmd  = mode . "map"
-    let rhs  = s:RHS(mode, ':call <SID>EnterMap('. string(a:name) .')<cr>')
+    let rhs  = s:RHS(mode, ':call tinykeymap#Call('. string(a:name) .')<cr>')
     exec cmd buffer_local a:map rhs
     if empty(buffer_local)
         let dict = s:tinykeymaps
@@ -109,12 +138,15 @@ function! tinykeymap#EnterMap(name, map, ...) "{{{3
 endf
 
 
-" :display: tinykeymap#Map(name, key, expr, ?options={})
-" When the tinykeymap [name] is in effect, pressing [key] causes [expr] 
+" :display: tinykeymap#Map(name, map, expr, ?options={})
+" When the tinykeymap [name] is in effect, pressing [map] causes [expr] 
 " to be |:execute|d.
 "
-" [key] must not be <Esc>, <Del> or <F1>. If [key] is a numeric value, 
-" such a map could cause conflicts when using a [count].
+" [map] can be a string or a list of characters. It [map] is a string, 
+" tinykeymap tries to figure out which keys you meant. If it goes wrong, 
+" use a list as the value of [map]. [map] must not be <Esc>, <Del> or 
+" <F1>. If [map] is a numeric value, such a map could cause conflicts 
+" when using a [count].
 "
 " The following keys are handled by tinykeymaps and can/should not be 
 " used in maps since they may cause conflicts.
@@ -131,23 +163,66 @@ endf
 " Options may contain the following keys:
 "   name ... The key's name (to be displayed in the help)
 "   exit ... If true, exit the current tinykeymap after evaluating 
-"           [expr]
-function! tinykeymap#Map(name, key, expr, ...) "{{{3
+"   [expr]
+function! tinykeymap#Map(name, map, expr, ...) "{{{3
     let dict = s:GetDict(a:name)
-    let def = {'expr': a:expr, 'options': a:0 >= 1 ? a:1 : {}}
-    if !has_key(def.options, 'name')
-        let def.options.name = a:key
+    if type(a:map) == 1
+        let map = split(a:map, '^\(<[[:alpha:]-]\+>\)\zs\|\zs')
+    elseif type(a:map) == 3
+        let map = a:map
+    else
+        throw "tinykeymap: map must be string or a list"
     endif
-    let keycode = s:Keycode(a:key)
-    let dict[keycode] = def
+    let chars = s:Map2Chars(map)
+    let def = {
+                \ 'chars': chars,
+                \ 'expr': a:expr,
+                \ 'options': a:0 >= 1 ? a:1 : {}
+                \ }
+    if !has_key(def.options, 'name')
+        let def.options.name = join(map, '')
+    endif
+    call s:SetMapDef(dict, chars, def)
 endf
 
 
-function! s:Keycode(key) "{{{3
+function! s:SetMapDef(dict, chars, value) "{{{3
+    let a:dict[string(a:chars)] = a:value
+endf
+
+
+function! s:GetMapDef(dict, chars) "{{{3
+    return get(a:dict, string(a:chars), {})
+endf
+
+
+" Convert a map (e.g. "<space>") to keycodes.
+function! s:Map2Chars(map) "{{{3
+    let chars = map(copy(a:map), 's:Map2Char(v:val)')
+    return chars
+endf
+
+
+function! s:Map2Char(key) "{{{3
     let keycode = escape(a:key, '\')
     let keycode = substitute(keycode, '<', '\\<', 'g')
     let keycode = eval('"'. keycode .'"')
     return keycode
+endf
+
+
+function! s:Keys2Chars(keys) "{{{3
+    let chars = map(copy(a:keys), 's:Key2Char(v:val)')
+    return chars
+endf
+
+
+function! s:Key2Char(key) "{{{3
+    if type(a:key) == 1
+        return a:key
+    else
+        return nr2char(a:key)
+    endif
 endf
 
 
@@ -183,30 +258,34 @@ function! s:RHS(mode, map) "{{{3
 endf
 
 
-function! s:EnterMap(name) "{{{3
+function! tinykeymap#Complete(ArgLead, CmdLine, CursorPos) "{{{3
+    let files = split(globpath(&rtp, 'autoload/tinykeymap/*.vim'), '\n')
+    let files = map(files, 'fnamemodify(v:val, ":t:r")')
+    if !empty(a:ArgLead)
+        let files = filter(files, 'strpart(v:val, 0, len(a:ArgLead)) == a:ArgLead')
+    endif
+    return files
+endf
+
+
+" :nodoc:
+function! tinykeymap#Call(name) "{{{3
     let rv = ''
     let dict = s:GetDict(a:name)
-    let msg = get(dict[s:oid], 'name', a:name)
+    let options = dict[s:oid]
+    let msg = get(options, 'name', a:name)
     let maxlen = float2nr(&columns * 0.8)
     " let maxlen = float2nr((&columns * &cmdheight) * 0.8)
-    " let keys = keys(dict)
-    " let keys = filter(keys, 'v:val[0:0] != "\<esc>"')
-    " let keys = map(keys, 'get(dict[v:val].options, "name", v:val)')
-    " let keys = sort(keys)
-    " call add(keys, '<Esc>')
-    " call add(keys, '<F1>')
-    " let message = printf("tinykeymap: %s (keys: %s)", msg, join(keys, '/'))
-    " if strlen(message) > float2nr(&columns * 0.8)
-    let message0 = "-- tinykeymap ". msg ." (help <F1>)%s --"
-    " endif
-    let messenger = get(dict[s:oid], 'message', '')
-    if empty(messenger)
-        let laststatus = -1
-        let statusline = ""
-    else
-        let laststatus = &laststatus
-        set laststatus=2
-        let statusline = &statusline
+    let messenger = get(options, 'message', '')
+    if g:tinykeymap#show_message == 'statusline'
+        if empty(messenger)
+            let laststatus = -1
+            let statusline = ""
+        else
+            let laststatus = &laststatus
+            set laststatus=2
+            let statusline = &statusline
+        endif
     endif
     let pos = getpos('.')
     let first_run = 1
@@ -215,79 +294,96 @@ function! s:EnterMap(name) "{{{3
     let ruler = &ruler
     let showcmd = &showcmd
     echo
-    let before = get(dict[s:oid], 'before', '')
-    let after = get(dict[s:oid], 'after', '')
-    let start = get(dict[s:oid], 'start', '')
+    let after = get(options, 'after', '')
+    let start = get(options, 'start', '')
     if !empty(start)
         exec start
     endif
     try
-        while time < g:tinykeymap#timeout
+        let keys = []
+        let timeout = get(options, 'timeout', g:tinykeymap#timeout)
+        let resolution = get(options, 'resolution', g:tinykeymap#resolution)
+        while timeout == 0 || time < timeout
             let key = getchar(0)
             " TLogVAR key
             if type(key) == 0 && key == 0
+                " TLogVAR "No key pressed"
                 if empty(s:count)
-                    let message = printf(message0, '')
+                    let message = printf(g:tinykeymap#message_fmt, msg, '')
                 else
-                    let message = printf(message0, ' '. s:count)
+                    let message = printf(g:tinykeymap#message_fmt, msg, ' '. s:count)
                 endif
                 if !empty(messenger)
                     let mapmsg = eval(messenger)
-                    " if !empty(mapmsg)
-                    "     let message .= ' '. mapmsg
-                    " endif
-                    if strlen(mapmsg) >= &columns
-                        let mapmsg = mapmsg[0 : &columns - 4] . '...'
+                    if g:tinykeymap#show_message == 'statusline'
+                        let mapmsg = s:ShortMessage(mapmsg, &columns)
+                        let &statusline = mapmsg
+                    elseif !empty(mapmsg)
+                        let message .= ' '. mapmsg
                     endif
-                    let &statusline = mapmsg
                 endif
-                if strlen(message) > maxlen
-                    let message = message[0 : maxlen - 4] . '...'
-                endif
+                let message = s:ShortMessage(message, maxlen)
                 redraw
                 echohl ModeMsg
                 echo message
                 echohl NONE
-                exec 'sleep' g:tinykeymap#resolution
-                let time += g:tinykeymap#resolution
+                exec 'sleep' resolution
+                let time += resolution
             elseif type(key) == 0 && key == 27
+                " TLogVAR "<esc>"
                 break
-            elseif type(key) == 1 && key == "\<F1>"
+            elseif type(key) == 1 && key ==# "\<F1>"
+                " TLogVAR "<f1>"
                 call s:Help(dict)
-            elseif type(key) == 1 && key == "\<Del>"
+            elseif type(key) == 1 && key ==# "\<Del>"
+                " TLogVAR "<del>"
                 if !empty(s:count)
                     let s:count = s:count[0 : -2]
                 endif
             else
-                let status = s:ProcessKey(a:name, key, before)
+                " TLogVAR "other key"
+                call add(keys, key)
+                let status = s:ProcessKey(a:name, keys, options)
                 " TLogVAR status
-                if status > 0
-                    let time = 0
-                    let first_run = 0
-                    if !empty(after)
-                        exec after
-                    endif
-                elseif status < 0
-                    let char = s:KeyChar(key)
+                if status == 0
+                    let chars = s:Keys2Chars(keys)
                     if first_run
                         if time > &timeoutlen
-                            let fkeys = char
                             let mode = 'm'
                         else
-                            let map = dict[s:oid].map
-                            let keycode = s:Keycode(map)
-                            let fkeys = keycode . char
+                            let map = options.map
+                            let char = s:Map2Char(map)
+                            call insert(chars, char)
                             let mode = 'n'
                         endif
                     else
-                        let fkeys = char
                         let mode = 'm'
                     endif
-                    " TLogVAR time, first_run, fkeys, mode
+                    let fkeys = join(chars, '')
+                    " TLogVAR time, first_run, fkeys, chars, mode
                     call feedkeys(fkeys, mode)
                     break
+                elseif status == 1 || status == 2
+                    if !empty(after)
+                        exec after
+                    endif
+                    if status == 2
+                        " handled key + exit
+                        break
+                    else
+                        " handled key
+                        let keys = []
+                        let time = 0
+                        let first_run = 0
+                    endif
+                elseif status == 3 || status == 4
+                    let time = 0
+                    " count
+                    if status == 4
+                        let keys = []
+                    endif
                 else
-                    break
+                    throw "tinykeymap: Internal error: Unhandled status: ". status
                 endif
             endif
         endwh
@@ -295,15 +391,18 @@ function! s:EnterMap(name) "{{{3
         echo ""
         redraw
     finally
-        let stop = get(dict[s:oid], 'stop', '')
+        let stop = get(options, 'stop', '')
+        " TLogVAR stop
         if !empty(stop)
             exec stop
         endif
         let &ruler = ruler
         let &showcmd = showcmd
-        if laststatus >= 0
-            let &laststatus = laststatus
-            let &statusline = statusline
+        if g:tinykeymap#show_message == 'statusline'
+            if laststatus >= 0
+                let &laststatus = laststatus
+                let &statusline = statusline
+            endif
         endif
     endtry
     return rv
@@ -338,19 +437,24 @@ function! tinykeymap#PressEnter() "{{{3
 endf
 
 
-function! s:ProcessKey(name, key, before) "{{{3
-    " TLogVAR a:name, a:key
-    let cont = 1
-    let key = s:KeyChar(a:key)
-    " TLogVAR a:key, key
+" Return values:
+" 0 ... Unhandled key
+" 1 ... Handled key + continue loop
+" 2 ... Handled key + exit
+" 3 ... It could be a handled key + continue loop
+" 4 ... A count was entered + continue loop
+function! s:ProcessKey(name, keys, options) "{{{3
+    " TLogVAR a:name, a:keys, a:options
+    let key = a:keys[-1]
+    let chars = s:Keys2Chars(a:keys)
+    " TLogVAR a:keys, chars
     let dict = s:GetDict(a:name)
     " TLogVAR dict
-    " TLogVAR key
-    if has_key(dict, key)
-        let def = get(dict, key, '')
-        if get(def.options, 'exit', 0)
-            let cont = 0
-        endif
+    " TLogVAR chars
+    let handle_key = s:CheckChars(dict, chars)
+    " TLogVAR handle_key
+    if handle_key > 0
+        let def = s:GetMapDef(dict, chars)
         let expr = def.expr
         " TLogVAR def, expr
         let iterations = 1
@@ -370,30 +474,77 @@ function! s:ProcessKey(name, key, before) "{{{3
         let expr = substitute(expr, '\V<lt>', '<', 'g')
         " TLogVAR iterations, expr
         if !empty(expr)
-            if !empty(a:before)
-                exec a:before
+            if has_key(a:options, 'before')
+                exec a:options.before
             endif
             for i in range(iterations)
                 exec expr
             endfor
         endif
-    elseif type(a:key) == 0 && a:key >= 48 && a:key < 58
-        if a:key > 48 || !empty(s:count)
-            let s:count .= key
+        let status = get(def.options, 'exit', 0) ? 2 : 1
+    elseif handle_key == 0
+        let status = 3
+    elseif !get(a:options, 'disable_count', 0) && type(key) == 0 && key >= 48 && key < 58
+        if key > 48 || !empty(s:count)
+            let s:count .= nr2char(key)
         endif
         " echom "DBG ProcessKey 1: s:count" s:count
+        let status = 4
+    elseif has_key(a:options, 'unknown_key')
+        if has_key(a:options, 'before')
+            exec a:options.before
+        endif
+        if call(a:options.unknown_key, [chars, str2nr(s:count)])
+            let status = 1
+        else
+            let status = 0
+        endif
     else
-        let cont = -1
+        let status = 0
     endif
-    return cont
+    " TLogVAR status
+    return status
 endf
 
 
-function! s:KeyChar(key) "{{{3
-    if type(a:key) == 1
-        return a:key
+function! s:ShortMessage(string, len) "{{{3
+    if strlen(a:string) > a:len
+        return a:string[0 : a:len - 4] . '...'
     else
-        return nr2char(a:key)
+        return a:string
     endif
+endf
+
+
+" Return values:
+" 1  ... full match
+" 0  ... partial match
+" -1 ... no match
+function! s:CheckChars(dict, chars) "{{{3
+    " TLogVAR a:dict
+    " TLogVAR a:chars
+    let rv = -1
+    let alen = len(a:chars)
+    let sakeys = string(a:chars)
+    " TLogVAR sakeys, alen
+    for [sokeys, def] in items(a:dict)
+        if sokeys != s:oid
+            " TLogVAR sokeys, def
+            let ochars = def.chars
+            let llen = len(ochars)
+            " TLogVAR ochars, llen
+            " TLogVAR llen, alen, ochars, a:chars
+            if llen == alen && ochars == a:chars
+                let rv = 1
+                break
+            elseif llen > alen
+                if ochars[0 : alen - 1] == a:chars
+                    let rv = 0
+                endif
+            endif
+        endif
+    endfor
+    " TLogVAR rv
+    return rv
 endf
 
