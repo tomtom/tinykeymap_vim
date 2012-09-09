@@ -3,32 +3,32 @@
 " @Website:     <+WWW+>
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-30.
-" @Last Change: 2012-09-05.
-" @Revision:    39
+" @Last Change: 2012-09-09.
+" @Revision:    40
 
 
-if !exists('g:tinykeymap#undo#map')
+if !exists('g:tinykeymap#map#undo#map')
     " Map leader for the "undo" tinykeymap.
     " If the undotree plugin is available, |:UndotreeToggle| will be 
     " called when entering the undo tinykeymap.
-    let g:tinykeymap#undo#map = g:tinykeymap#mapleader ."u"   "{{{2
+    let g:tinykeymap#map#undo#map = g:tinykeymap#mapleader ."u"   "{{{2
 endif
 
 
-if !exists('tinykeymap#undo#options')
-    let tinykeymap#undo#options = {
+if !exists('tinykeymap#map#undo#options')
+    let tinykeymap#map#undo#options = {
                 \ 'name': 'undo mode',
                 \ 'message': 'printf("cur: %s, time: %s", undotree().seq_cur, strftime("%c", undotree().time_cur))'
                 \ }
     if exists(':UndotreeToggle')
-        let tinykeymap#undo#options.start = 'if bufwinnr("undotree_") == -1 | UndotreeToggle | endif'
-        let tinykeymap#undo#options.stop = 'if bufwinnr("undotree_") != -1 | UndotreeToggle | endif'
-        let tinykeymap#undo#options.after = 'doautocmd CursorMoved'
+        let tinykeymap#map#undo#options.start = 'if bufwinnr("undotree_") == -1 | UndotreeToggle | endif'
+        let tinykeymap#map#undo#options.stop = 'if bufwinnr("undotree_") != -1 | UndotreeToggle | endif'
+        let tinykeymap#map#undo#options.after = 'doautocmd CursorMoved'
     endif
 endif
 
 
-call tinykeymap#EnterMap("undo", g:tinykeymap#undo#map, tinykeymap#undo#options)
+call tinykeymap#EnterMap("undo", g:tinykeymap#map#undo#map, tinykeymap#map#undo#options)
 call tinykeymap#Map('undo', 'u', 'undo')
 call tinykeymap#Map('undo', '<Down>', 'undo')
 call tinykeymap#Map('undo', 'U', 'norm! U')

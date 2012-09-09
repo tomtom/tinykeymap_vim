@@ -2,17 +2,17 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
-" @Last Change: 2012-09-05.
-" @Revision:    45
+" @Last Change: 2012-09-09.
+" @Revision:    46
 
-if !exists('g:tinykeymap#windows#map')
+if !exists('g:tinykeymap#map#windows#map')
     " Map leader for the "windows" tinykeymap.
-    let g:tinykeymap#windows#map = "<C-W>"   "{{{2
+    let g:tinykeymap#map#windows#map = "<C-W>"   "{{{2
 endif
 
 
 " Based on Andy Wokulas's windows mode for tinymode.
-call tinykeymap#EnterMap("windows", g:tinykeymap#windows#map, {
+call tinykeymap#EnterMap("windows", g:tinykeymap#map#windows#map, {
             \ 'name': 'windows mode',
             \ 'message': 'winnr() .": ". bufname("%")'
             \ })

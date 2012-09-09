@@ -1,40 +1,9 @@
+" filter.vim
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Created:     2012-09-06.
-" @Last Change: 2012-09-06.
-" @Revision:    112
-
-if !exists('g:tinykeymap#filter#map')
-    let g:tinykeymap#filter#map = g:tinykeymap#mapleader .'f'   "{{{2
-endif
-
-
-if !exists('g:tinykeymap#filter#options')
-    let g:tinykeymap#filter#options = {
-                \ 'message': 'printf("filter: %s", g:tinykeymap#filter#rx)',
-                \ 'start': 'let g:tinykeymap#filter#rx = expand("<cword>") | let s:fdm = [&l:fdm, &l:nu, &l:cul] | setl fdm=manual | setl nu | setl cul | call tinykeymap#filter#Process()',
-                \ 'stop': 'unlet! g:tinykeymap#filter#rx | exec "norm! zE" | let [&l:fdm, &l:nu, &l:cul] = s:fdm | 3match none',
-                \ 'after': 'call tinykeymap#filter#Process()',
-                \ 'unknown_key': 'tinykeymap#filter#UnkownKey',
-                \ 'disable_count': 1,
-                \ 'timeout': 0
-                \ }
-endif
-
-
-call tinykeymap#EnterMap("filter", g:tinykeymap#filter#map, g:tinykeymap#filter#options)
-
-call tinykeymap#Map('filter', '<Del>', 'if len(g:tinykeymap#filter#rx) > 0 | let g:tinykeymap#filter#rx = g:tinykeymap#filter#rx[1 : -1] | endif',
-            \ {'desc': 'Remove first character'})
-call tinykeymap#Map('filter', '<BS>', 'if len(g:tinykeymap#filter#rx) > 0 | let g:tinykeymap#filter#rx = g:tinykeymap#filter#rx[0 : -2] | endif',
-            \ {'desc': 'Remove last character'})
-call tinykeymap#Map('filter', '<C-BS>', 'if len(g:tinykeymap#filter#rx) > 0 | let g:tinykeymap#filter#rx = substitute(g:tinykeymap#filter#rx, ''\(^\|\s\+\)\S\+$'', "", "") | endif',
-            \ {'desc': 'Remove last word'})
-call tinykeymap#Map('filter', '<C-Del>', 'if len(g:tinykeymap#filter#rx) > 0 | let g:tinykeymap#filter#rx = substitute(g:tinykeymap#filter#rx, ''^\S\+\(\s\+\|$\)'', "", "") | endif',
-            \ {'desc': 'Remove first word'})
-call tinykeymap#Map('filter', '<Up>', 'norm! k')
-call tinykeymap#Map('filter', '<Down>', 'norm! j')
-
+" @Created:     2012-09-09.
+" @Last Change: 2012-09-09.
+" @Revision:    1
 
 function! tinykeymap#filter#Process() "{{{3
     norm! zE

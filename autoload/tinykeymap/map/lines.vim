@@ -1,19 +1,19 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-05.
-" @Last Change: 2012-09-07.
-" @Revision:    35
+" @Last Change: 2012-09-09.
+" @Revision:    36
 
 " The lines tinykeymap war originally created for testing multi-key 
 " maps.
 
-if !exists('g:tinykeymap#lines#map')
-    let g:tinykeymap#lines#map = g:tinykeymap#mapleader .'l'   "{{{2
+if !exists('g:tinykeymap#map#lines#map')
+    let g:tinykeymap#map#lines#map = g:tinykeymap#mapleader .'l'   "{{{2
 endif
 
 
-if !exists('g:tinykeymap#lines#options')
-    let g:tinykeymap#lines#options = {
+if !exists('g:tinykeymap#map#lines#options')
+    let g:tinykeymap#map#lines#options = {
                 \ 'message': 'printf("<%d,%d>", line("."), col("."))',
                 \ 'start': 'let s:lines_options = [&l:cul, &lz] | let &l:cul = 1 | let &lz = 0',
                 \ 'stop': 'let [&l:cul, &lz] = s:lines_options | unlet s:lines_options',
@@ -22,7 +22,7 @@ if !exists('g:tinykeymap#lines#options')
 endif
 
 
-call tinykeymap#EnterMap("lines", g:tinykeymap#lines#map, g:tinykeymap#lines#options)
+call tinykeymap#EnterMap("lines", g:tinykeymap#map#lines#map, g:tinykeymap#map#lines#options)
 
 call tinykeymap#Map('lines', 'O', 'norm! <count>O')
 call tinykeymap#Map('lines', 'o', 'norm! <count>o')

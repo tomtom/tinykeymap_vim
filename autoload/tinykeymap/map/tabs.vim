@@ -2,17 +2,17 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
-" @Last Change: 2012-08-31.
-" @Revision:    9
+" @Last Change: 2012-09-09.
+" @Revision:    10
 
-if !exists('g:tinykeymap#tabs#map')
+if !exists('g:tinykeymap#map#tabs#map')
     " Map leader for the "tabs" tinykeymap.
-    let g:tinykeymap#tabs#map = "gt"   "{{{2
+    let g:tinykeymap#map#tabs#map = "gt"   "{{{2
 endif
 
 
 " Based on Andy Wokulas's tabs mode for tinymode.
-call tinykeymap#EnterMap('tabs', g:tinykeymap#tabs#map, {'name': 'tabs mode'})
+call tinykeymap#EnterMap('tabs', g:tinykeymap#map#tabs#map, {'name': 'tabs mode'})
 call tinykeymap#Map('tabs', 'n', 'tabnew') 
 call tinykeymap#Map('tabs', 't', 'norm! gt') 
 call tinykeymap#Map('tabs', 'T', 'norm! gT') 

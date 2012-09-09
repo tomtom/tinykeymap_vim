@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2012-09-06.
-" @Revision:    499
+" @Last Change: 2012-09-09.
+" @Revision:    500
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -71,7 +71,7 @@ function! tinykeymap#Load(maps) "{{{3
     endif
     for map in maps
         " TLogVAR map
-        for file in split(globpath(&rtp, 'autoload/tinykeymap/'. map .'.vim'), '\n')
+        for file in split(globpath(&rtp, 'autoload/tinykeymap/map/'. map .'.vim'), '\n')
             " TLogVAR file
             exec 'source' file
         endfor
@@ -259,7 +259,7 @@ endf
 
 
 function! tinykeymap#Complete(ArgLead, CmdLine, CursorPos) "{{{3
-    let files = split(globpath(&rtp, 'autoload/tinykeymap/*.vim'), '\n')
+    let files = split(globpath(&rtp, 'autoload/tinykeymap/map/*.vim'), '\n')
     let files = map(files, 'fnamemodify(v:val, ":t:r")')
     if !empty(a:ArgLead)
         let files = filter(files, 'strpart(v:val, 0, len(a:ArgLead)) == a:ArgLead')
