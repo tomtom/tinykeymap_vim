@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
-" @Last Change: 2012-09-09.
-" @Revision:    110
+" @Last Change: 2012-09-10.
+" @Revision:    111
 
 if !exists('g:tinykeymap#map#buffers#map')
     " Map leader for the "buffers" tinykeymap.
@@ -33,6 +33,5 @@ call tinykeymap#Map('buffers', '<Right>', 'call tinykeymap#buffers#Shift(<count1
             \ {'desc': 'Rotate list to the left'})
 call tinykeymap#Map('buffers', '/', 'let g:tinykeymap#buffers#filter = input("Filter regexp: ")',
             \ {'desc': 'Prioritize buffers matching a regexp'})
-
 
 
