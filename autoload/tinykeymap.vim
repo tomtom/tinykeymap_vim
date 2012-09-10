@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2012-09-09.
-" @Revision:    500
+" @Last Change: 2012-09-10.
+" @Revision:    508
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -69,13 +69,20 @@ function! tinykeymap#Load(maps) "{{{3
     else
         let maps = [a:maps]
     endif
+    let rv = 0
     for map in maps
         " TLogVAR map
-        for file in split(globpath(&rtp, 'autoload/tinykeymap/map/'. map .'.vim'), '\n')
-            " TLogVAR file
-            exec 'source' file
-        endfor
+        if empty(s:GetDict(map, {}))
+            for file in split(globpath(&rtp, 'autoload/tinykeymap/map/'. map .'.vim'), '\n')
+                " TLogVAR file
+                exec 'source' file
+                let rv = 1
+            endfor
+        else
+            let rv = 1
+        endif
     endfor
+    return rv
 endf
 
 
@@ -226,11 +233,13 @@ function! s:Key2Char(key) "{{{3
 endf
 
 
-function! s:GetDict(name) "{{{3
+function! s:GetDict(name, ...) "{{{3
     if exists('b:tinykeymaps') && has_key(b:tinykeymaps, a:name)
         return b:tinykeymaps[a:name]
     elseif has_key(s:tinykeymaps, a:name)
         return s:tinykeymaps[a:name]
+    elseif a:0 >= 1
+        return a:1
     else
         throw "tinykeymaps: Unknown map: ". a:name
     endif
@@ -270,7 +279,9 @@ endf
 
 " :nodoc:
 function! tinykeymap#Call(name) "{{{3
-    let rv = ''
+    if !tinykeymap#Load(a:name)
+        throw "tinykeymaps: Unknown map: ". a:name
+    endif
     let dict = s:GetDict(a:name)
     let options = dict[s:oid]
     let msg = get(options, 'name', a:name)
@@ -405,7 +416,6 @@ function! tinykeymap#Call(name) "{{{3
             endif
         endif
     endtry
-    return rv
 endf
 
 
