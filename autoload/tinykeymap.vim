@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-09-10.
-" @Revision:    508
+" @Revision:    510
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -165,7 +165,8 @@ endf
 "
 " Any occurence of "<count>" in [expr] is replaced with the current 
 " [count]. Occurences of "<lt>" are replaced with "<".
-" "<count1>" works similar but a value of 1 is inserted anyway.
+" "<count0>" works similar but a value of 0 is by default.
+" "<count1>" works similar but a value of 1 is by default.
 "
 " Options may contain the following keys:
 "   name ... The key's name (to be displayed in the help)
@@ -471,6 +472,9 @@ function! s:ProcessKey(name, keys, options) "{{{3
         " echom "DBG ProcessKey 2: s:count" s:count
         if expr =~ '\V<count>'
             let expr = substitute(expr, '\V<count>', s:count, 'g')
+        elseif expr =~ '\V<count0>'
+            let count0 = s:count == 0 ? 0 : s:count
+            let expr = substitute(expr, '\V<count0>', count0, 'g')
         elseif expr =~ '\V<count1>'
             let count1 = s:count == 0 ? 1 : s:count
             let expr = substitute(expr, '\V<count1>', count1, 'g')
