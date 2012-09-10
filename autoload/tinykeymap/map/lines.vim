@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-05.
-" @Last Change: 2012-09-09.
-" @Revision:    36
+" @Last Change: 2012-09-10.
+" @Revision:    42
 
 " The lines tinykeymap war originally created for testing multi-key 
 " maps.
@@ -17,8 +17,12 @@ if !exists('g:tinykeymap#map#lines#options')
                 \ 'message': 'printf("<%d,%d>", line("."), col("."))',
                 \ 'start': 'let s:lines_options = [&l:cul, &lz] | let &l:cul = 1 | let &lz = 0',
                 \ 'stop': 'let [&l:cul, &lz] = s:lines_options | unlet s:lines_options',
-                \ 'after': 'redraw!'
                 \ }
+    if exists('g:loaded_tlib')
+        let g:tinykeymap#map#lines#options.after = 'call tlib#buffer#ViewLine(line("."))'
+    else
+        let g:tinykeymap#map#lines#options.after = 'redraw!'
+    endif
 endif
 
 
@@ -38,7 +42,7 @@ call tinykeymap#Map('lines', '<Down>', 'norm! <count>j')
 
 call tinykeymap#Map('lines', '<C-Up>', 'norm! dd<count>kP')
 call tinykeymap#Map('lines', '<C-Down>', 'norm! dd<count>jP')
-call tinykeymap#Map('lines', '<S-Up>', 'norm! yy<count>kP')
+call tinykeymap#Map('lines', '<S-Up>', 'norm! yy<count>kp')
 call tinykeymap#Map('lines', '<S-Down>', 'norm! yy<count>jP')
 
 " Modelled after LineJuggler plugin:
