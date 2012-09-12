@@ -1,23 +1,11 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
-" @Last Change: 2012-09-10.
-" @Revision:    38
+" @Last Change: 2012-09-11.
+" @Revision:    43
 
 if !exists('g:tinykeymap#map#qfl#map')
     let g:tinykeymap#map#qfl#map = g:tinykeymap#mapleader .'q'   "{{{2
-endif
-
-
-if !exists('g:tinykeymap#map#qfl#options')
-    let g:tinykeymap#map#qfl#options = {
-                \ 'timeout': 0,
-                \ 'start': 'cwindow',
-                \ 'stop': 'cclose'
-                \ }
-    if exists('g:loaded_tlib')
-        let g:tinykeymap#map#qfl#options.after = 'call tlib#buffer#ViewLine(line("."))'
-    endif
 endif
 
 
@@ -27,9 +15,22 @@ if !exists('g:tinykeymap#map#qfl#bang')
 endif
 
 
+if !exists('g:tinykeymap#map#qfl#options')
+    let g:tinykeymap#map#qfl#options = {
+                \ 'timeout': 0,
+                \ 'start': 'cwindow | setl nu | cc'. g:tinykeymap#map#qfl#bang .' 1',
+                \ 'stop': 'cclose'
+                \ }
+    if exists('g:loaded_tlib')
+        let g:tinykeymap#map#qfl#options.after = 'call tlib#buffer#ViewLine(line("."))'
+        let g:tinykeymap#map#qfl#options.start .= ' | call tlib#buffer#ViewLine(line("."))'
+    endif
+endif
+
+
 call tinykeymap#EnterMap("quickfixlist", g:tinykeymap#map#qfl#map, g:tinykeymap#map#qfl#options)
 
-call tinykeymap#Map('quickfixlist', 'c', 'cc'. g:tinykeymap#map#qfl#bang .' <count>')
+call tinykeymap#Map('quickfixlist', '<CR>', 'cc'. g:tinykeymap#map#qfl#bang .' <count>', {'exit': 1})
 call tinykeymap#Map('quickfixlist', 'n', '<count>cnext'. g:tinykeymap#map#qfl#bang)
 call tinykeymap#Map('quickfixlist', 'p', '<count>cNext'. g:tinykeymap#map#qfl#bang)
 call tinykeymap#Map('quickfixlist', 'j', '<count>cnext'. g:tinykeymap#map#qfl#bang)
