@@ -42,15 +42,16 @@ tinykeymap comes with the following pre-defined tinykeymaps (see
 |g:tinykeymap#mapleader| and the related g:tinykeymap#*#map variables for how 
 to customize the key binding):
 
-    tabs    gt        :: Operate on tabs
-    windows <C-W>     :: Operate on windows
-    buffers <Leader>b :: Operate on buffers
-    diff    <Leader>d :: Make it easier to work with |diff|s
-    filter  <Leader>f :: Fold lines not matching some pattern (default: word 
+    tabs    gt         :: Operate on tabs
+    windows <C-W>      :: Operate on windows
+    buffers <Leader>mb :: Operate on buffers
+    diff    <Leader>md :: Make it easier to work with |diff|s
+    filter  <Leader>mf :: Fold lines not matching some pattern (default: word 
                          under cursor)
-    lines   <Leader>l :: Operate on lines
-    qfl     <Leader>q :: Operate on the |quickfix| list
-    undo    <Leader>u :: Operate on the |undo| tree
+    lines   <Leader>ml :: Operate on lines
+    loc     <Leader>mo :: Operate on the |location-list|
+    qfl     <Leader>mq :: Operate on the |quickfix| list
+    undo    <Leader>mu :: Operate on the |undo| tree
 
 Differences to tinymode:
 
