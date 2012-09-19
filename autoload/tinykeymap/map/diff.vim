@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
-" @Last Change: 2012-09-10.
-" @Revision:    64
+" @Last Change: 2012-09-14.
+" @Revision:    65
 
 if !exists('g:tinykeymap#map#diff#map')
     let g:tinykeymap#map#diff#map = g:tinykeymap#mapleader .'d'   "{{{2
@@ -19,7 +19,7 @@ if !exists('g:tinykeymap#map#diff#options')
     if exists('g:loaded_tlib')
         let g:tinykeymap#map#diff#options.after = 'call tlib#buffer#ViewLine(line("."))'
     else
-        let g:tinykeymap#map#diff#options.after = 'redraw!'
+        let g:tinykeymap#map#diff#options.after = 'norm! zz'
     endif
 endif
 

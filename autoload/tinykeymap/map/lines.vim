@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-05.
-" @Last Change: 2012-09-10.
-" @Revision:    42
+" @Last Change: 2012-09-14.
+" @Revision:    43
 
 " The lines tinykeymap war originally created for testing multi-key 
 " maps.
@@ -21,7 +21,7 @@ if !exists('g:tinykeymap#map#lines#options')
     if exists('g:loaded_tlib')
         let g:tinykeymap#map#lines#options.after = 'call tlib#buffer#ViewLine(line("."))'
     else
-        let g:tinykeymap#map#lines#options.after = 'redraw!'
+        let g:tinykeymap#map#lines#options.after = 'norm! zz'
     endif
 endif
 

@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
-" @Last Change: 2012-09-11.
-" @Revision:    43
+" @Last Change: 2012-09-14.
+" @Revision:    44
 
 if !exists('g:tinykeymap#map#qfl#map')
     let g:tinykeymap#map#qfl#map = g:tinykeymap#mapleader .'q'   "{{{2
@@ -24,6 +24,8 @@ if !exists('g:tinykeymap#map#qfl#options')
     if exists('g:loaded_tlib')
         let g:tinykeymap#map#qfl#options.after = 'call tlib#buffer#ViewLine(line("."))'
         let g:tinykeymap#map#qfl#options.start .= ' | call tlib#buffer#ViewLine(line("."))'
+    else
+        let g:tinykeymap#map#qfl#options.after = 'norm! zz'
     endif
 endif
 

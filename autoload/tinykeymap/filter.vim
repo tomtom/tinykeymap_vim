@@ -31,7 +31,12 @@ function! tinykeymap#filter#Process() "{{{3
             call setpos('.', pos)
         endtry
     endif
-    exec printf('3match IncSearch /%s/', g:tinykeymap#filter#rx)
+    exec printf('3match IncSearch /%s/', g:tinykeymap#map#filter#rx)
+    if exists('g:loaded_tlib')
+        call tlib#buffer#ViewLine(line("."))
+    else
+        norm! zz
+    endif
 endf
 
 
