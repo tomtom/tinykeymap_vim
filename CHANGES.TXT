@@ -1,0 +1,20 @@
+version: "0.02"
+  - Misc improvements: multi-key maps, more options etc.
+  - Improved "buffers" map
+  - Improved "undo" map
+  - Improved "windows" map
+  - New "diff" map
+  - New "filter" map
+  - New "lines" map
+  - New "qfl" map
+  - Moved maps to autoload/tinykeymap/map
+  - Make sure a map is loaded upon activation
+  - lines, qfl: Highlight the current line if tlib is installed
+  - <count0>: Insert 0 by default
+  - diff: G, P, u maps; highlight current line if tlib is installed
+  - qfl: <cr> calls :cc (not c)
+  - Map for location-list
+  - Call "norm! zz" after some actions
+  - filter: use g:tinykeymap#map#filter#rx instead of g:tinykeymap#filter#rx
+  MD5 checksum: 829fc233090bf9d543c9851d236df60f
+
