@@ -116,7 +116,7 @@ function! tinykeymap#EnterMap(name, map, ...) "{{{3
         let warning_msg = "tinykeymap: Map already defined: ". a:name ." ". a:map
         if g:tinykeymap#conflict == 1 || g:tinykeymap#conflict == 2
             echohl WarningMsg
-            echom warningmsg
+            echom warning_msg
             echohl NONE
         endif
         if g:tinykeymap#conflict <= 1
