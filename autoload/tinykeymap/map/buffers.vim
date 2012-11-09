@@ -2,7 +2,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
 " @Last Change: 2012-09-10.
-" @Revision:    111
+" @Revision:    112
 
 if !exists('g:tinykeymap#map#buffers#map')
     " Map leader for the "buffers" tinykeymap.

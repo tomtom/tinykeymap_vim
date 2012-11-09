@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-09.
 " @Last Change: 2012-09-14.
-" @Revision:    3
+" @Revision:    4
 
 function! tinykeymap#filter#Process() "{{{3
     norm! zE

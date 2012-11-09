@@ -3,12 +3,12 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-09-10.
-" @Revision:    510
+" @Revision:    528
 
 
 if !exists('g:tinykeymap#mapleader')
     " The mapleader for some tinykeymaps.
-    let g:tinykeymap#mapleader = mapleader .'m'   "{{{2
+    let g:tinykeymap#mapleader = (exists('g:mapleader') ? g:mapleader : '#') .'#m'   "{{{2
 endif
 
 
