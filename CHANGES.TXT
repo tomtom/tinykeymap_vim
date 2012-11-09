@@ -18,3 +18,9 @@ version: "0.02"
   - filter: use g:tinykeymap#map#filter#rx instead of g:tinykeymap#filter#rx
   MD5 checksum: 829fc233090bf9d543c9851d236df60f
 
+  - fix msg variable name typo
+  - Merge branch 'a_little_bit_fix' of https://github.com/NagatoPain/tinykeymap_vim
+  - g:tinykeymap#mapleader: Check whether mapleader is defined (reported by C Brabandt)
+  MD5 checksum: bbe0b05d5cefcf3d6f9328995762711e
+version: "0.03"
+
