@@ -24,3 +24,7 @@ version: "0.02"
   MD5 checksum: bbe0b05d5cefcf3d6f9328995762711e
 version: "0.03"
 
+  - If mapleader isn't defined use "\", which is vim's default mapleader
+  MD5 checksum: b982d342ca7cecce4f3fdde81e9003ae
+version: "0.04"
+
