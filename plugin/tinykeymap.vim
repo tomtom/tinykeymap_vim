@@ -4,13 +4,13 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
 " @Last Change: 2012-09-05.
-" @Revision:    27
+" @Revision:    29
 " GetLatestVimScripts: 4199 0 :AutoInstall: tinykeymap.vim
 
 if &cp || exists("loaded_tinykeymap")
     finish
 endif
-let loaded_tinykeymap = 2
+let loaded_tinykeymap = 4
 
 let s:save_cpo = &cpo
 set cpo&vim
