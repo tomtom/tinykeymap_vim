@@ -128,7 +128,7 @@ g:tinykeymaps_default          (default: ["*"])
 autoload/tinykeymap.vim~
 
                                                     *g:tinykeymap#mapleader*
-g:tinykeymap#mapleader         (default: (exists('g:mapleader') ? g:mapleader : '#') .'#m')
+g:tinykeymap#mapleader         (default: (exists('g:mapleader') ? g:mapleader : '\') .'m')
     The mapleader for some tinykeymaps.
 
                                                     *g:tinykeymap#conflict*
