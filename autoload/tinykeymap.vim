@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-09-10.
-" @Revision:    534
+" @Revision:    568
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -142,6 +142,39 @@ function! tinykeymap#EnterMap(name, map, ...) "{{{3
         let options.name = a:name
     endif
     let dict[a:name] = {s:oid : copy(options)}
+endf
+
+
+" Show information on loaded tinykeymaps.
+function! tinykeymap#Info(show_all) "{{{3
+    let dict = copy(s:tinykeymaps)
+    if exists('b:tinykeymaps')
+        let dict = extend(dict, b:tinykeymaps)
+    endif
+    let msg = ['Loaded tinykeymaps:']
+    let namemaxlen = max(map(copy(dict), 'strwidth(get(get(v:val, s:oid, {}), "name", v:key))'))
+    for [name, values] in items(dict)
+        let options = get(values, s:oid, {})
+        let myname = get(options, 'name', name)
+        if a:show_all
+            call add(msg, printf('-- %s %s', myname, repeat('-', max([1, &columns - strwidth(myname) - 5]))))
+        else
+            let myopts = []
+        endif
+        for [optname, optvalue] in items(options)
+            if a:show_all
+                call add(msg, printf("  %10s: %s", optname, string(optvalue)))
+            elseif index(['name', 'message', 'start', 'stop', 'after'], optname) == -1
+                call add(myopts, printf("%s: %s", optname, string(optvalue)))
+            endif
+        endfor
+        if !a:show_all
+            call add(msg, printf("%". (namemaxlen + 1) ."s: %s", myname, join(myopts, ', ')))
+        endif
+    endfor
+    echo join(msg, "\n")
+    call tinykeymap#PressEnter()
+    redraw
 endf
 
 

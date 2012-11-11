@@ -93,6 +93,7 @@ Also available via git: http://github.com/tomtom/tinykeymap_vim/
 Contents~
 
         :Tinykeymap ....................... |:Tinykeymap|
+        :TinykeymapsInfo .................. |:TinykeymapsInfo|
         g:tinykeymaps_default ............. |g:tinykeymaps_default|
         g:tinykeymap#mapleader ............ |g:tinykeymap#mapleader|
         g:tinykeymap#conflict ............. |g:tinykeymap#conflict|
@@ -102,6 +103,7 @@ Contents~
         g:tinykeymap#show_message ......... |g:tinykeymap#show_message|
         tinykeymap#Load ................... |tinykeymap#Load()|
         tinykeymap#EnterMap ............... |tinykeymap#EnterMap()|
+        tinykeymap#Info ................... |tinykeymap#Info()|
         tinykeymap#Map .................... |tinykeymap#Map()|
         tinykeymap#Complete ............... |tinykeymap#Complete()|
         tinykeymap#PressEnter ............. |tinykeymap#PressEnter()|
@@ -113,8 +115,13 @@ Contents~
 plugin/tinykeymap.vim~
 
                                                     *:Tinykeymap*
-:Tinykeymap
+:Tinykeymap NAME
     Activate a tinykeymap defined with |tinykeymap#EnterMap()|.
+
+                                                    *:TinykeymapsInfo*
+:TinykeymapsInfo[!]
+    Show information on loaded tinykeymaps.
+    With the optional "!", show all details.
 
                                                     *g:tinykeymaps_default*
 g:tinykeymaps_default          (default: ["*"])
@@ -195,6 +202,10 @@ tinykeymap#EnterMap(name, map, ?options={})
     CAUTION: Currently only normal mode maps (mode == "n") are supported. 
     It is possible to define other type of maps but the behaviour is 
     untested/undefined.
+
+                                                    *tinykeymap#Info()*
+tinykeymap#Info(show_all)
+    Show information on loaded tinykeymaps.
 
                                                     *tinykeymap#Map()*
 tinykeymap#Map(name, map, expr, ?options={})
