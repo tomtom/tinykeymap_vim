@@ -28,3 +28,9 @@ version: "0.03"
   MD5 checksum: b982d342ca7cecce4f3fdde81e9003ae
 version: "0.04"
 
+  - g:tinykeymap#mapleader defaults to '<Leader>m' (no need to use mapleader directly)
+  - :TinykeymapsInfo command: give information on loaded tinykeymaps
+  - Fix handling of conflicting maps
+  MD5 checksum: 07833eda99f35110f6d2d527fc088e1c
+version: "0.05"
+
