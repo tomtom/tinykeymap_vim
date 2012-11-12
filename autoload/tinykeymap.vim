@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-09-10.
-" @Revision:    568
+" @Revision:    578
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -112,23 +112,7 @@ endf
 function! tinykeymap#EnterMap(name, map, ...) "{{{3
     let options = a:0 >= 1 ? a:1 : {}
     let mode = get(options, 'mode', 'n')
-    if !empty(maparg(a:map, mode))
-        let warning_msg = "tinykeymap: Map already defined: ". a:name ." ". a:map
-        if g:tinykeymap#conflict == 1 || g:tinykeymap#conflict == 2
-            echohl WarningMsg
-            echom warning_msg
-            echohl NONE
-        endif
-        if g:tinykeymap#conflict <= 1
-            return
-        elseif g:tinykeymap#conflict == 4
-            throw warning_msg
-        endif
-    endif
     let buffer_local = get(options, 'buffer', 0) ? '<buffer>' : ''
-    let cmd  = mode . "map"
-    let rhs  = s:RHS(mode, ':call tinykeymap#Call('. string(a:name) .')<cr>')
-    exec cmd buffer_local a:map rhs
     if empty(buffer_local)
         let dict = s:tinykeymaps
     else
@@ -137,6 +121,23 @@ function! tinykeymap#EnterMap(name, map, ...) "{{{3
         endif
         let dict = b:tinykeymaps
     endif
+    if !empty(maparg(a:map, mode))
+        let warning_msg = "tinykeymap: Map already defined: ". a:name ." ". a:map
+        if g:tinykeymap#conflict == 1 || g:tinykeymap#conflict == 2
+            echohl WarningMsg
+            echom warning_msg
+            echohl NONE
+        endif
+        if g:tinykeymap#conflict <= 1
+            let dict[a:name] = {}
+            return
+        elseif g:tinykeymap#conflict == 4
+            throw warning_msg
+        endif
+    endif
+    let cmd  = mode . "map"
+    let rhs  = s:RHS(mode, ':call tinykeymap#Call('. string(a:name) .')<cr>')
+    exec cmd buffer_local a:map rhs
     let options.map = a:map
     if !has_key(options, 'name')
         let options.name = a:name
@@ -207,6 +208,10 @@ endf
 "   [expr]
 function! tinykeymap#Map(name, map, expr, ...) "{{{3
     let dict = s:GetDict(a:name)
+    if empty(dict)
+        " A map was defined but due to a conflict it will be ignored
+        return
+    endif
     if type(a:map) == 1
         let map = split(a:map, '^\(<[[:alpha:]-]\+>\)\zs\|\zs')
     elseif type(a:map) == 3
