@@ -2,7 +2,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
 " @Last Change: 2012-09-09.
-" @Revision:    114
+" @Revision:    123
 
 if !exists('g:tinykeymap#map#filter#map')
     let g:tinykeymap#map#filter#map = g:tinykeymap#mapleader .'f'   "{{{2
@@ -12,8 +12,8 @@ endif
 if !exists('g:tinykeymap#map#filter#options')
     let g:tinykeymap#map#filter#options = {
                 \ 'message': 'printf("filter: %s", g:tinykeymap#map#filter#rx)',
-                \ 'start': 'let g:tinykeymap#map#filter#rx = expand("<cword>") | let s:fdm = [&l:fdm, &l:nu, &l:cul] | setl fdm=manual | setl nu | setl cul | call tinykeymap#filter#Process()',
-                \ 'stop': 'unlet! g:tinykeymap#map#filter#rx | exec "norm! zE" | let [&l:fdm, &l:nu, &l:cul] = s:fdm | 3match none',
+                \ 'start': 'let w:tinykeymaps_fdm = tinykeymap#filter#Start()',
+                \ 'stop': 'call tinykeymap#filter#Stop(w:tinykeymaps_fdm)',
                 \ 'after': 'call tinykeymap#filter#Process()',
                 \ 'unknown_key': 'tinykeymap#filter#UnkownKey',
                 \ 'disable_count': 1,
@@ -38,4 +38,8 @@ call tinykeymap#Map('filter', '<C-Del>',
             \ {'desc': 'Remove first word'})
 call tinykeymap#Map('filter', '<Up>', 'norm! k')
 call tinykeymap#Map('filter', '<Down>', 'norm! j')
+call tinykeymap#Map('filter', '<CR>',
+            \ 'let w:tinykeymaps_exit = 1 |'.
+            \ 'let w:tinykeymaps_fdm = [&l:fdm, w:tinykeymaps_fdm[1], w:tinykeymaps_fdm[2], &l:fdl, &l:fen]',
+            \ {'desc': 'Apply filter', 'exit': 1})
 

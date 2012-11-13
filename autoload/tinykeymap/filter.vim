@@ -3,10 +3,12 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-09.
 " @Last Change: 2012-09-14.
-" @Revision:    4
+" @Revision:    24
 
 function! tinykeymap#filter#Process() "{{{3
-    norm! zE
+    if !exists("w:tinykeymaps_exit") || !w:tinykeymaps_exit
+        norm! zE
+    endif
     if !empty(g:tinykeymap#map#filter#rx)
         let pos = getpos('.')
         try
@@ -37,6 +39,37 @@ function! tinykeymap#filter#Process() "{{{3
     else
         norm! zz
     endif
+endf
+
+
+function! tinykeymap#filter#Start() "{{{3
+    let g:tinykeymap#map#filter#rx = expand("<cword>")
+    unlet! w:tinykeymaps_exit
+    let fdm = [&l:fdm, &l:nu, &l:cul, &l:fdl, &l:fen]
+    if exists('w:tinykeymaps_fdm')
+        for i in [0, 3, 4]
+            let fdm[i] = w:tinykeymaps_fdm[i]
+        endfor
+    endif
+    setl fdm=manual nu cul fen
+    call tinykeymap#filter#Process()
+    return fdm
+endf
+
+
+function! tinykeymap#filter#Stop(list) "{{{3
+    " TLogVAR a:list
+    let g:tinykeymap#map#filter#rx = ''
+    " TLogVAR exists("w:tinykeymaps_exit")
+    if !exists("w:tinykeymaps_exit") || !w:tinykeymaps_exit
+        norm! zE
+        let [&l:fdm, &l:nu, &l:cul, &l:fdl, &l:fen] = a:list
+    else
+        let [fdm, &l:nu, &l:cul, fdl, fen] = a:list
+    endif
+    " TLogVAR &l:fdm, &l:nu, &l:cul, &l:fdl, &l:fen
+    3match none
+    unlet! w:tinykeymaps_exit
 endf
 
 
