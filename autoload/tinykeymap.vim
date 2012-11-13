@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-09-10.
-" @Revision:    578
+" @Revision:    584
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -50,6 +50,11 @@ if !exists('g:tinykeymap#show_message')
     "     cmdline (default value)
     "     statusline
     let g:tinykeymap#show_message = 'cmdline'   "{{{2
+endif
+
+
+if !exists('g:tinykeymap#debug')
+    let g:tinykeymap#debug = 0
 endif
 
 
@@ -506,6 +511,9 @@ function! s:ProcessKey(name, keys, options) "{{{3
     " TLogVAR chars
     let handle_key = s:CheckChars(dict, chars)
     " TLogVAR handle_key
+    if g:tinykeymap#debug
+        echom "tinykeymaps: handle_key:" a:name string(a:keys) handle_key
+    endif
     if handle_key > 0
         let def = s:GetMapDef(dict, chars)
         let expr = def.expr
@@ -528,6 +536,9 @@ function! s:ProcessKey(name, keys, options) "{{{3
         endif
         let s:count = ''
         let expr = substitute(expr, '\V<lt>', '<', 'g')
+        if g:tinykeymap#debug
+            echom "tinykeymaps: expr:" expr s:count
+        endif
         " TLogVAR iterations, expr
         if !empty(expr)
             if has_key(a:options, 'before')
@@ -559,6 +570,9 @@ function! s:ProcessKey(name, keys, options) "{{{3
         let status = 0
     endif
     " TLogVAR status
+        if g:tinykeymap#debug
+            echom "tinykeymaps: status:" status
+        endif
     return status
 endf
 
