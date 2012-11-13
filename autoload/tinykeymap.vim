@@ -166,7 +166,11 @@ function! tinykeymap#Info(show_all) "{{{3
             if a:show_all
                 call add(msg, printf("  %10s: %s", optname, string(optvalue)))
             elseif index(['name', 'message', 'start', 'stop', 'after'], optname) == -1
-                call add(myopts, printf("%s: %s", optname, string(optvalue)))
+                if optname == 'map'
+                    call insert(myopts, printf("%s: %s", optname, string(optvalue)),0)
+                else
+                    call add(myopts, printf("%s: %s", optname, string(optvalue)))
+                endif
             endif
         endfor
         if !a:show_all
