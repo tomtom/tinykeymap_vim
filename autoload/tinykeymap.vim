@@ -121,7 +121,7 @@ function! tinykeymap#EnterMap(name, map, ...) "{{{3
         endif
         let dict = b:tinykeymaps
     endif
-    if !empty(maparg(a:map, mode))
+    if !empty(maparg(a:map, mode)) && maparg(a:map, mode) != ":call tinykeymap#Call('".a:name. "')<CR>"
         let warning_msg = "tinykeymap: Map already defined: ". a:name ." ". a:map
         if g:tinykeymap#conflict == 1 || g:tinykeymap#conflict == 2
             echohl WarningMsg
