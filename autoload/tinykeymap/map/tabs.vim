@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
 " @Last Change: 2012-09-09.
-" @Revision:    10
+" @Revision:    16
 
 if !exists('g:tinykeymap#map#tabs#map')
     " Map leader for the "tabs" tinykeymap.
@@ -18,6 +18,8 @@ call tinykeymap#Map('tabs', 't', 'norm! gt')
 call tinykeymap#Map('tabs', 'T', 'norm! gT') 
 call tinykeymap#Map('tabs', "<Right>", 'norm! gt')
 call tinykeymap#Map('tabs', "<Left>", 'norm! gT')
+call tinykeymap#Map('tabs', "<Up>", 'exec "tabmove" (max([1, tabpagenr() - 1]) - 1)')
+call tinykeymap#Map('tabs', "<Down>", 'exec "tabmove" (max([0, tabpagenr() - 1]) + 1)')
 call tinykeymap#Map("tabs", "^", "tabfirst")
 call tinykeymap#Map("tabs", "$", "tablast")
 call tinykeymap#Map("tabs", "<Home>", "tabfirst")
