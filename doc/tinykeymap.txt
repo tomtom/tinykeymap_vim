@@ -108,6 +108,8 @@ Contents~
         tinykeymap#Complete ............... |tinykeymap#Complete()|
         tinykeymap#PressEnter ............. |tinykeymap#PressEnter()|
         tinykeymap#filter#Process ......... |tinykeymap#filter#Process()|
+        tinykeymap#filter#Start ........... |tinykeymap#filter#Start()|
+        tinykeymap#filter#Stop ............ |tinykeymap#filter#Stop()|
         tinykeymap#filter#UnkownKey ....... |tinykeymap#filter#UnkownKey()|
 
 
@@ -248,6 +250,12 @@ autoload/tinykeymap/filter.vim~
 
                                                     *tinykeymap#filter#Process()*
 tinykeymap#filter#Process()
+
+                                                    *tinykeymap#filter#Start()*
+tinykeymap#filter#Start()
+
+                                                    *tinykeymap#filter#Stop()*
+tinykeymap#filter#Stop(list)
 
                                                     *tinykeymap#filter#UnkownKey()*
 tinykeymap#filter#UnkownKey(chars, count)
