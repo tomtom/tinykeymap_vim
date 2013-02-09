@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2012-09-10.
-" @Revision:    584
+" @Revision:    602
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -34,6 +34,13 @@ endif
 if !exists('g:tinykeymap#resolution')
     " Number of milliseconds to sleep when polling for characters.
     let g:tinykeymap#resolution = "200m"   "{{{2
+endif
+
+
+if !exists('g:tinykeymap#autokey_msecs')
+    " if a tinykeymap has an autokey option, use |feedkey()| to simulate 
+    " a key press every N milliseconds.
+    let g:tinykeymap#autokey_msecs = 5000   "{{{2
 endif
 
 
@@ -99,17 +106,22 @@ endf
 " for processing via |feedkeys()|.
 "
 " Options may contain the following keys:
-"   mode ... A map mode (see |maparg()|)
-"   buffer ... Make the tinykeymap buffer-local
-"   message ... An expression that returns a message string (the string 
-"       will be shortened if necessary
-"   start ... An expression |:execute|d before entering the map
-"   stop ... An expression |:execute|d after leaving the map
-"   after ... An execute |:execute|d after processing a character
-"   timeout ... Map-specific value for |g:tinykeymap#timeout|
-"   resolution ... Map-specific value for |g:tinykeymap#resolution|
-"   unknown_key ... Function to handle unknown keys
+"   mode ............ A map mode (see |maparg()|)
+"   buffer .......... Make the tinykeymap buffer-local
+"   message ......... An expression that returns a message string (the 
+"                     string will be shortened if necessary
+"   start ........... An expression |:execute|d before entering the map
+"   stop ............ An expression |:execute|d after leaving the map
+"   after ........... An execute |:execute|d after processing a 
+"                     character
+"   timeout ......... Map-specific value for |g:tinykeymap#timeout|
+"   resolution ...... Map-specific value for |g:tinykeymap#resolution|
+"   unknown_key ..... Function to handle unknown keys
 "   disable_count ... If true, numeric values are handled as characters
+"   autokey ......... Simulate a keypress every autokey_msecs 
+"                     milliseconds
+"   autokey_msecs ... Milliseconds between simulate "autokey" presses 
+"                     (default: |g:tinykeymap#autokey_msecs|)
 "
 " CAUTION: Currently only normal mode maps (mode == "n") are supported. 
 " It is possible to define other type of maps but the behaviour is 
@@ -360,8 +372,15 @@ function! tinykeymap#Call(name) "{{{3
     endif
     try
         let keys = []
-        let timeout = get(options, 'timeout', g:tinykeymap#timeout)
         let resolution = get(options, 'resolution', g:tinykeymap#resolution)
+        let autokey = get(options, 'autokey', '')
+        if empty(autokey)
+            let timeout = get(options, 'timeout', g:tinykeymap#timeout)
+            let autokey_msecs = 0
+        else
+            let timeout = 0
+            let autokey_msecs = get(options, 'autokey_msecs', g:tinykeymap#autokey_msecs)
+        endif
         while timeout == 0 || time < timeout
             let key = getchar(0)
             " TLogVAR key
@@ -388,6 +407,10 @@ function! tinykeymap#Call(name) "{{{3
                 echohl NONE
                 exec 'sleep' resolution
                 let time += resolution
+                if autokey_msecs > 0 && time > autokey_msecs
+                    call feedkeys(autokey)
+                    let time = 0
+                endif
             elseif type(key) == 0 && key == 27
                 " TLogVAR "<esc>"
                 break
