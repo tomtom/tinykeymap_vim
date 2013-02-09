@@ -99,6 +99,7 @@ Contents~
         g:tinykeymap#conflict ............. |g:tinykeymap#conflict|
         g:tinykeymap#timeout .............. |g:tinykeymap#timeout|
         g:tinykeymap#resolution ........... |g:tinykeymap#resolution|
+        g:tinykeymap#autokey_msecs ........ |g:tinykeymap#autokey_msecs|
         g:tinykeymap#message_fmt .......... |g:tinykeymap#message_fmt|
         g:tinykeymap#show_message ......... |g:tinykeymap#show_message|
         tinykeymap#Load ................... |tinykeymap#Load()|
@@ -159,6 +160,11 @@ g:tinykeymap#timeout           (default: 5000)
 g:tinykeymap#resolution        (default: "200m")
     Number of milliseconds to sleep when polling for characters.
 
+                                                    *g:tinykeymap#autokey_msecs*
+g:tinykeymap#autokey_msecs     (default: 5000)
+    if a tinykeymap has an autokey option, use |feedkey()| to simulate 
+    a key press every N milliseconds.
+
                                                     *g:tinykeymap#message_fmt*
 g:tinykeymap#message_fmt       (default: "-- %s (help <F1>)%s --")
     The format string (see |printf()|) for the tinykeymap message. This 
@@ -189,17 +195,22 @@ tinykeymap#EnterMap(name, map, ?options={})
     for processing via |feedkeys()|.
 
     Options may contain the following keys:
-      mode ... A map mode (see |maparg()|)
-      buffer ... Make the tinykeymap buffer-local
-      message ... An expression that returns a message string (the string 
-          will be shortened if necessary
-      start ... An expression |:execute|d before entering the map
-      stop ... An expression |:execute|d after leaving the map
-      after ... An execute |:execute|d after processing a character
-      timeout ... Map-specific value for |g:tinykeymap#timeout|
-      resolution ... Map-specific value for |g:tinykeymap#resolution|
-      unknown_key ... Function to handle unknown keys
+      mode ............ A map mode (see |maparg()|)
+      buffer .......... Make the tinykeymap buffer-local
+      message ......... An expression that returns a message string (the 
+                        string will be shortened if necessary
+      start ........... An expression |:execute|d before entering the map
+      stop ............ An expression |:execute|d after leaving the map
+      after ........... An execute |:execute|d after processing a 
+                        character
+      timeout ......... Map-specific value for |g:tinykeymap#timeout|
+      resolution ...... Map-specific value for |g:tinykeymap#resolution|
+      unknown_key ..... Function to handle unknown keys
       disable_count ... If true, numeric values are handled as characters
+      autokey ......... Simulate a keypress every autokey_msecs 
+                        milliseconds
+      autokey_msecs ... Milliseconds between simulate "autokey" presses 
+                        (default: |g:tinykeymap#autokey_msecs|)
 
     CAUTION: Currently only normal mode maps (mode == "n") are supported. 
     It is possible to define other type of maps but the behaviour is 
