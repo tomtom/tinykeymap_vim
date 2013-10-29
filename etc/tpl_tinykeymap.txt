@@ -13,11 +13,18 @@ activate a tinykeymap. Users can then use single key shortcuts to
 trigger commands defined with |tinykeymap#Map()|. Pressing an undefined 
 key or <Esc>, deactivates the tinykeymap.
 
-Example usage: Define a tinykeymap to make it easier to ...
+tinykeymap comes with some example maps to make it easier to ...
 
-    - operate on windows
-    - operate on tabs
-    - operate on text
+    buffers ... navigate/operate on buffers
+    diff    ... navigate/operate on |diff|s
+    filter  ... "filter" text in a buffer using folds
+    lines   ... navigate/operate on lines (similar to vimscript #4140)
+    loc     ... navigate the |location-list|
+    qfl     ... navigate the |quickfix| list
+    tabs    ... navigate/operate on tabs
+    undo    ... navigate/operate on the undo tree (with optional support for 
+                vimscript #4177)
+    windows ... navigate/operate on windows
 
 Example definition for a "tabs" tinykeymap (heavily based on Andy 
 Wokula's tabs mode for tinymode): >
