@@ -34,3 +34,14 @@ version: "0.04"
   MD5 checksum: 07833eda99f35110f6d2d527fc088e1c
 version: "0.05"
 
+  - tinykeymap#Info(): display map arg first (patch by Chr Brabandt)
+  - tinykeymap#EnterMap(): Ignore conflicts for maps to the same tinykeymap (patch by Chr Brabandt)
+  - g:tinykeymap#debug: Help debugging
+  - filter tinykeymap: <cr> ... leave folds intact (patch by Chr Brabandt)
+  - tabs: up & down: move tab page left/right
+  - addon-info
+  - autokey, autokey_msecs options
+  - Help template
+  MD5 checksum: 01926a3a2f612acc40569b1b176271be
+version: "0.06"
+
