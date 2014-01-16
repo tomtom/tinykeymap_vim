@@ -13,7 +13,9 @@ activate a tinykeymap. Users can then use single key shortcuts to
 trigger commands defined with |tinykeymap#Map()|. Pressing an undefined 
 key or <Esc>, deactivates the tinykeymap.
 
-tinykeymap comes with some example maps to make it easier to ...
+tinykeymap comes with the following pre-defined tinykeymaps (see 
+|g:tinykeymap#mapleader| and the related g:tinykeymap#*#map variables for how 
+to customize the key binding):
 
     buffers ... navigate/operate on buffers
     diff    ... navigate/operate on |diff|s
@@ -48,21 +50,6 @@ Example use of the above tinykeymap: E.g. pressing gt3n^c2t will:
 A tinykeymap is exited (1) by pressing <Esc> or (2) by timeout (see 
 |g:tinykeymap#timeout|).
 
-tinykeymap comes with the following pre-defined tinykeymaps (see 
-|g:tinykeymap#mapleader| and the related g:tinykeymap#*#map variables for how 
-to customize the key binding):
-
-    tabs    gt         :: Operate on tabs
-    windows <C-W>      :: Operate on windows
-    buffers <Leader>mb :: Operate on buffers
-    diff    <Leader>md :: Make it easier to work with |diff|s
-    filter  <Leader>mf :: Fold lines not matching some pattern (default: word 
-                         under cursor)
-    lines   <Leader>ml :: Operate on lines
-    loc     <Leader>mo :: Operate on the |location-list|
-    qfl     <Leader>mq :: Operate on the |quickfix| list
-    undo    <Leader>mu :: Operate on the |undo| tree
-
 Differences to tinymode:
 
     - tinykeymaps and maps may have options (optional)
@@ -94,6 +81,7 @@ If this is not what you want, set |g:tinykeymaps_default| in your
 |vimrc| file.
 
 Also available via git: http://github.com/tomtom/tinykeymap_vim/
+Bug tracker: https://github.com/tomtom/tinykeymap_vim/issues/
 
 
 %s
