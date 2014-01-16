@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-09.
 " @Last Change: 2012-09-14.
-" @Revision:    24
+" @Revision:    25
 
 function! tinykeymap#filter#Process() "{{{3
     if !exists("w:tinykeymaps_exit") || !w:tinykeymaps_exit
@@ -42,8 +42,8 @@ function! tinykeymap#filter#Process() "{{{3
 endf
 
 
-function! tinykeymap#filter#Start() "{{{3
-    let g:tinykeymap#map#filter#rx = expand("<cword>")
+function! tinykeymap#filter#Start(...) "{{{3
+    let g:tinykeymap#map#filter#rx = a:0 >= 1 ? a:1 : expand("<cword>")
     unlet! w:tinykeymaps_exit
     let fdm = [&l:fdm, &l:nu, &l:cul, &l:fdl, &l:fen]
     if exists('w:tinykeymaps_fdm')
