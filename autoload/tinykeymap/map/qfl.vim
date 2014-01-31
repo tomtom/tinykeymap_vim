@@ -2,7 +2,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
 " @Last Change: 2012-09-14.
-" @Revision:    44
+" @Revision:    45
 
 if !exists('g:tinykeymap#map#qfl#map')
     let g:tinykeymap#map#qfl#map = g:tinykeymap#mapleader .'q'   "{{{2
@@ -18,8 +18,8 @@ endif
 if !exists('g:tinykeymap#map#qfl#options')
     let g:tinykeymap#map#qfl#options = {
                 \ 'timeout': 0,
-                \ 'start': 'cwindow | setl nu | cc'. g:tinykeymap#map#qfl#bang .' 1',
-                \ 'stop': 'cclose'
+                \ 'start': 'cwindow | setl nu',
+                \ 'stop': 'cclose | setl nonu'
                 \ }
     if exists('g:loaded_tlib')
         let g:tinykeymap#map#qfl#options.after = 'call tlib#buffer#ViewLine(line("."))'

@@ -2,7 +2,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
 " @Last Change: 2012-09-14.
-" @Revision:    53
+" @Revision:    55
 
 if !exists('g:tinykeymap#map#loc#map')
     let g:tinykeymap#map#loc#map = g:tinykeymap#mapleader .'o'   "{{{2
@@ -18,9 +18,10 @@ endif
 if !exists('g:tinykeymap#map#loc#options')
     let g:tinykeymap#map#loc#options = {
                 \ 'timeout': 0,
-                \ 'start': 'lwindow | setl nu| ll'. g:tinykeymap#map#loc#bang .' 1',
-                \ 'stop': 'lclose'
+                \ 'start': 'lwindow | setl nu',
+                \ 'stop': 'lclose | setl nonu'
                 \ }
+                " \ 'start': 'lwindow | setl nu| ll'. g:tinykeymap#map#loc#bang .' 1',
     if exists('g:loaded_tlib')
         let g:tinykeymap#map#loc#options.after = 'call tlib#buffer#ViewLine(line("."))'
         let g:tinykeymap#map#loc#options.start .= ' | call tlib#buffer#ViewLine(line("."))'
