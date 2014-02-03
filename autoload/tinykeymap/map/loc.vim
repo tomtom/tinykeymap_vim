@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
-" @Last Change: 2012-09-14.
-" @Revision:    55
+" @Last Change: 2014-02-03.
+" @Revision:    56
 
 if !exists('g:tinykeymap#map#loc#map')
     let g:tinykeymap#map#loc#map = g:tinykeymap#mapleader .'o'   "{{{2

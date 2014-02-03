@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2012-09-10.
-" @Revision:    602
+" @Last Change: 2014-02-03.
+" @Revision:    618
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -62,6 +62,19 @@ endif
 
 if !exists('g:tinykeymap#debug')
     let g:tinykeymap#debug = 0
+endif
+
+
+if !exists('g:tinykeymap#ignore_error')
+    " If true, don't abort maps on errors.
+    let g:tinykeymap#ignore_error = 1   "{{{2
+endif
+
+
+if !exists('g:tinykeymap#show_error_msecs')
+    " If g:tinykeymap#ignore_error is true, show the error message for a 
+    " short period of time (see |:sleep|).
+    let g:tinykeymap#show_error_timeout = "500ms"   "{{{2
 endif
 
 
@@ -445,7 +458,17 @@ function! tinykeymap#Call(name) "{{{3
                     " TLogVAR time, first_run, fkeys, chars, mode
                     call feedkeys(fkeys, mode)
                     break
-                elseif status == 1 || status == 2
+                elseif status == -1 || status == 1 || status == 2
+                    if status == -1
+                        if !get(options, 'ignore_error', g:tinykeymap#ignore_error)
+                        exec 'throw' s:exception
+                    else
+                        echohl Error
+                        echom s:exception
+                        echohl NONE
+                        exec 'sleep' g:tinykeymap#show_error_timeout
+                    endif
+                    endif
                     if !empty(after)
                         exec after
                     endif
@@ -519,84 +542,90 @@ endf
 
 
 " Return values:
-" 0 ... Unhandled key
-" 1 ... Handled key + continue loop
-" 2 ... Handled key + exit
-" 3 ... It could be a handled key + continue loop
-" 4 ... A count was entered + continue loop
+" -1 ... Error
+"  0 ... Unhandled key
+"  1 ... Handled key + continue loop
+"  2 ... Handled key + exit
+"  3 ... It could be a handled key + continue loop
+"  4 ... A count was entered + continue loop
 function! s:ProcessKey(name, keys, options) "{{{3
-    " TLogVAR a:name, a:keys, a:options
-    let key = a:keys[-1]
-    let chars = s:Keys2Chars(a:keys)
-    " TLogVAR a:keys, chars
-    let dict = s:GetDict(a:name)
-    " TLogVAR dict
-    " TLogVAR chars
-    let handle_key = s:CheckChars(dict, chars)
-    " TLogVAR handle_key
-    if g:tinykeymap#debug
-        echom "tinykeymaps: handle_key:" a:name string(a:keys) handle_key
-    endif
-    if handle_key > 0
-        let def = s:GetMapDef(dict, chars)
-        let expr = def.expr
-        " TLogVAR def, expr
-        let iterations = 1
-        " echom "DBG ProcessKey 2: s:count" s:count
-        if expr =~ '\V<count>'
-            let expr = substitute(expr, '\V<count>', s:count, 'g')
-        elseif expr =~ '\V<count0>'
-            let count0 = s:count == 0 ? 0 : s:count
-            let expr = substitute(expr, '\V<count0>', count0, 'g')
-        elseif expr =~ '\V<count1>'
-            let count1 = s:count == 0 ? 1 : s:count
-            let expr = substitute(expr, '\V<count1>', count1, 'g')
-        elseif !empty(s:count)
-            let iterations = str2nr(s:count)
-        endif
-        if iterations == 0
-            let iterations = 1
-        endif
-        let s:count = ''
-        let expr = substitute(expr, '\V<lt>', '<', 'g')
+    try
+        " TLogVAR a:name, a:keys, a:options
+        let key = a:keys[-1]
+        let chars = s:Keys2Chars(a:keys)
+        " TLogVAR a:keys, chars
+        let dict = s:GetDict(a:name)
+        " TLogVAR dict
+        " TLogVAR chars
+        let handle_key = s:CheckChars(dict, chars)
+        " TLogVAR handle_key
         if g:tinykeymap#debug
-            echom "tinykeymaps: expr:" expr s:count
+            echom "tinykeymaps: handle_key:" a:name string(a:keys) handle_key
         endif
-        " TLogVAR iterations, expr
-        if !empty(expr)
+        if handle_key > 0
+            let def = s:GetMapDef(dict, chars)
+            let expr = def.expr
+            " TLogVAR def, expr
+            let iterations = 1
+            " echom "DBG ProcessKey 2: s:count" s:count
+            if expr =~ '\V<count>'
+                let expr = substitute(expr, '\V<count>', s:count, 'g')
+            elseif expr =~ '\V<count0>'
+                let count0 = s:count == 0 ? 0 : s:count
+                let expr = substitute(expr, '\V<count0>', count0, 'g')
+            elseif expr =~ '\V<count1>'
+                let count1 = s:count == 0 ? 1 : s:count
+                let expr = substitute(expr, '\V<count1>', count1, 'g')
+            elseif !empty(s:count)
+                let iterations = str2nr(s:count)
+            endif
+            if iterations == 0
+                let iterations = 1
+            endif
+            let s:count = ''
+            let expr = substitute(expr, '\V<lt>', '<', 'g')
+            if g:tinykeymap#debug
+                echom "tinykeymaps: expr:" expr s:count
+            endif
+            " TLogVAR iterations, expr
+            if !empty(expr)
+                if has_key(a:options, 'before')
+                    exec a:options.before
+                endif
+                for i in range(iterations)
+                    exec expr
+                endfor
+            endif
+            let status = get(def.options, 'exit', 0) ? 2 : 1
+        elseif handle_key == 0
+            let status = 3
+        elseif !get(a:options, 'disable_count', 0) && type(key) == 0 && key >= 48 && key < 58
+            if key > 48 || !empty(s:count)
+                let s:count .= nr2char(key)
+            endif
+            " echom "DBG ProcessKey 1: s:count" s:count
+            let status = 4
+        elseif has_key(a:options, 'unknown_key')
             if has_key(a:options, 'before')
                 exec a:options.before
             endif
-            for i in range(iterations)
-                exec expr
-            endfor
-        endif
-        let status = get(def.options, 'exit', 0) ? 2 : 1
-    elseif handle_key == 0
-        let status = 3
-    elseif !get(a:options, 'disable_count', 0) && type(key) == 0 && key >= 48 && key < 58
-        if key > 48 || !empty(s:count)
-            let s:count .= nr2char(key)
-        endif
-        " echom "DBG ProcessKey 1: s:count" s:count
-        let status = 4
-    elseif has_key(a:options, 'unknown_key')
-        if has_key(a:options, 'before')
-            exec a:options.before
-        endif
-        if call(a:options.unknown_key, [chars, str2nr(s:count)])
-            let status = 1
+            if call(a:options.unknown_key, [chars, str2nr(s:count)])
+                let status = 1
+            else
+                let status = 0
+            endif
         else
             let status = 0
         endif
-    else
-        let status = 0
-    endif
-    " TLogVAR status
+        " TLogVAR status
         if g:tinykeymap#debug
             echom "tinykeymaps: status:" status
         endif
-    return status
+        return status
+    catch
+        let s:exception = v:exception
+        return -1
+    endtry
 endf
 
 
