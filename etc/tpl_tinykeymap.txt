@@ -17,16 +17,25 @@ tinykeymap comes with the following pre-defined tinykeymaps (see
 |g:tinykeymap#mapleader| and the related g:tinykeymap#*#map variables for how 
 to customize the key binding):
 
-    buffers ... navigate/operate on buffers
-    diff    ... navigate/operate on |diff|s
+    buffers ... Navigate/operate on buffers
+                Enter map: <Leader>mb
+    diff    ... Navigate/operate on |diff|s
+                Enter map: <Leader>md
     filter  ... "filter" text in a buffer using folds
-    lines   ... navigate/operate on lines (similar to vimscript #4140)
-    loc     ... navigate the |location-list|
-    qfl     ... navigate the |quickfix| list
-    tabs    ... navigate/operate on tabs
-    undo    ... navigate/operate on the undo tree (with optional support for 
+                Enter map: <Leader>mf
+    lines   ... Navigate/operate on lines (similar to vimscript #4140)
+                Enter map: <Leader>ml
+    loc     ... Navigate the |location-list|
+                Enter map: <Leader>mo
+    qfl     ... Navigate the |quickfix| list
+                Enter map: <Leader>mq
+    tabs    ... Navigate/operate on tabs
+                Enter map: gt
+    undo    ... Navigate/operate on the undo tree (with optional support for 
                 vimscript #4177)
-    windows ... navigate/operate on windows
+                Enter map: <Leader>mu
+    windows ... Navigate/operate on windows
+                Enter map: <C-W>
 
 Example definition for a "tabs" tinykeymap (heavily based on Andy 
 Wokula's tabs mode for tinymode): >
