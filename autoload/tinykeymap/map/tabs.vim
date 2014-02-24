@@ -1,6 +1,6 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Revision:    21
+" @Revision:    29
 
 
 if !exists('g:tinykeymap#map#tabs#map')
@@ -10,7 +10,7 @@ endif
 
 augroup TinyKeyMapTabs
     au!
-    au TabLeave * let g:mrutab = tabpagenr()
+    au TabLeave * let g:tkm_previous_tab = tabpagenr()
 augroup END
 
 
@@ -30,5 +30,5 @@ call tinykeymap#Map("tabs", "<End>", "tablast")
 call tinykeymap#Map("tabs", "c", "tabclose")
 call tinykeymap#Map("tabs", "<Del>", "tabclose")
 call tinykeymap#Map("tabs", "<BS>", "tabclose")
-call tinykeymap#Map("tabs", "<c-o>", "call tinykeymap#tabs#MRU()", {'name': 'Go to most recently used tab'})
+call tinykeymap#Map("tabs", "p", "call tinykeymap#tabs#Previous()", {'name': 'Previous tab'})
 

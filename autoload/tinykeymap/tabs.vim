@@ -2,19 +2,19 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @GIT:         http://github.com/tomtom/tabs_vim
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Revision:    8
+" @Revision:    10
 
 
 " Contributed by Daniel Hahler
-function! tinykeymap#tabs#MRU() "{{{3
-    if !exists('g:mrutab')
-        let g:mrutab = 1
+function! tinykeymap#tabs#Previous() "{{{3
+    if !exists('g:tkm_previous_tab')
+        let g:tkm_previous_tab = 1
     endif
     let tpnr = tabpagenr()
-    if g:mrutab > tabpagenr('$') || g:mrutab == tpnr
-        if g:mrutab > 1
+    if g:tkm_previous_tab > tabpagenr('$') || g:tkm_previous_tab == tpnr
+        if g:tkm_previous_tab > 1
             " go to the left
-            let g:mrutab = tpnr - 1
+            let g:tkm_previous_tab = tpnr - 1
         else
             echohl WarningMsg
             echom 'There is only one tab!'
@@ -22,6 +22,6 @@ function! tinykeymap#tabs#MRU() "{{{3
             return
         endif
     endif
-    exec 'tabn' g:mrutab
+    exec 'tabn' g:tkm_previous_tab
 endf
 
