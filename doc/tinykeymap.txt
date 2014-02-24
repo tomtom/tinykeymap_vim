@@ -118,6 +118,7 @@ Contents~
         tinykeymap#filter#Start ............... |tinykeymap#filter#Start()|
         tinykeymap#filter#Stop ................ |tinykeymap#filter#Stop()|
         tinykeymap#filter#UnkownKey ........... |tinykeymap#filter#UnkownKey()|
+        tinykeymap#tabs#Previous .............. |tinykeymap#tabs#Previous()|
         g:tinykeymap#map#buffers#map .......... |g:tinykeymap#map#buffers#map|
         g:tinykeymap#map#windows#map .......... |g:tinykeymap#map#windows#map|
         g:tinykeymap#map#undo#map ............. |g:tinykeymap#map#undo#map|
@@ -296,6 +297,14 @@ tinykeymap#filter#Stop(list)
 
                                                     *tinykeymap#filter#UnkownKey()*
 tinykeymap#filter#UnkownKey(chars, count)
+
+
+========================================================================
+autoload/tinykeymap/tabs.vim~
+
+                                                    *tinykeymap#tabs#Previous()*
+tinykeymap#tabs#Previous()
+    Contributed by Daniel Hahler
 
 
 ========================================================================
