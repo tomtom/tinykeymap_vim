@@ -2,7 +2,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
 " @Last Change: 2012-09-09.
-" @Revision:    123
+" @Revision:    126
 
 if !exists('g:tinykeymap#map#filter#map')
     let g:tinykeymap#map#filter#map = g:tinykeymap#mapleader .'f'   "{{{2
@@ -36,6 +36,9 @@ call tinykeymap#Map('filter', '<C-BS>',
 call tinykeymap#Map('filter', '<C-Del>',
             \ 'if len(g:tinykeymap#map#filter#rx) > 0 | let g:tinykeymap#map#filter#rx = substitute(g:tinykeymap#map#filter#rx, ''^\S\+\(\s\+\|$\)'', "", "") | endif',
             \ {'desc': 'Remove first word'})
+call tinykeymap#Map('filter', '<C-o>',
+            \ 'call inputsave() | let g:tinykeymap#map#filter#rx = input("Regexp: ", g:tinykeymap#map#filter#rx) | call inputrestore()',
+            \ {'desc': 'Edit regexp'})
 call tinykeymap#Map('filter', '<Up>', 'norm! k')
 call tinykeymap#Map('filter', '<Down>', 'norm! j')
 call tinykeymap#Map('filter', '<CR>',
