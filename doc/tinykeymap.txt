@@ -108,6 +108,7 @@ Contents~
         g:tinykeymap#show_message ............. |g:tinykeymap#show_message|
         g:tinykeymap#ignore_error ............. |g:tinykeymap#ignore_error|
         g:tinykeymap#show_error_timeout ....... |g:tinykeymap#show_error_timeout|
+        g:tinykeymap#break_key ................ |g:tinykeymap#break_key|
         tinykeymap#Load ....................... |tinykeymap#Load()|
         tinykeymap#EnterMap ................... |tinykeymap#EnterMap()|
         tinykeymap#Info ....................... |tinykeymap#Info()|
@@ -203,6 +204,12 @@ g:tinykeymap#ignore_error      (default: 1)
 g:tinykeymap#show_error_timeout (default: "500ms")
     If g:tinykeymap#ignore_error is true, show the error message for a 
     short period of time (see |:sleep|).
+
+                                                    *g:tinykeymap#break_key*
+g:tinykeymap#break_key         (default: 0)
+    By default, users can press <Esc> to abort the map. If non-empty, 
+    also use this key. Use :echo getchar() to find out possible 
+    values.
 
                                                     *tinykeymap#Load()*
 tinykeymap#Load(maps)

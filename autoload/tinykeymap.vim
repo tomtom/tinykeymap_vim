@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2014-02-03.
-" @Revision:    618
+" @Revision:    642
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -75,6 +75,14 @@ if !exists('g:tinykeymap#show_error_msecs')
     " If g:tinykeymap#ignore_error is true, show the error message for a 
     " short period of time (see |:sleep|).
     let g:tinykeymap#show_error_timeout = "500ms"   "{{{2
+endif
+
+
+if !exists('g:tinykeymap#break_key')
+    " By default, users can press <Esc> to abort the map. If non-empty, 
+    " also use this key. Use :echo getchar() to find out possible 
+    " values.
+    let g:tinykeymap#break_key = 0   "{{{2
 endif
 
 
@@ -394,6 +402,7 @@ function! tinykeymap#Call(name) "{{{3
             let timeout = 0
             let autokey_msecs = get(options, 'autokey_msecs', g:tinykeymap#autokey_msecs)
         endif
+        let break_key_type = empty(g:tinykeymap#break_key) ? -1 : type(g:tinykeymap#break_key)
         while timeout == 0 || time < timeout
             let key = getchar(0)
             " TLogVAR key
@@ -424,6 +433,9 @@ function! tinykeymap#Call(name) "{{{3
                     call feedkeys(autokey)
                     let time = 0
                 endif
+            elseif type(key) == break_key_type && key == g:tinykeymap#break_key
+                " TLogVAR 'g:tinykeymap#break_key', g:tinykeymap#break_key
+                break
             elseif type(key) == 0 && key == 27
                 " TLogVAR "<esc>"
                 break
@@ -493,7 +505,7 @@ function! tinykeymap#Call(name) "{{{3
             endif
         endwh
         " echo "tinykeymaps: Leave ". msg
-        echo ""
+        echo ''
         redraw
     finally
         let stop = get(options, 'stop', '')
