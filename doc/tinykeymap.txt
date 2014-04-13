@@ -230,6 +230,7 @@ tinykeymap#EnterMap(name, map, ?options={})
 
     Options may contain the following keys:
       mode ............ A map mode (see |maparg()|)
+      remap ........... If true use, |:map| instead of |:noremap|
       buffer .......... Make the tinykeymap buffer-local
       message ......... An expression that returns a message string (the 
                         string will be shortened if necessary

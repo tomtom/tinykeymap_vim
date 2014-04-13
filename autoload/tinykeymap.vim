@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2014-02-03.
-" @Revision:    642
+" @Revision:    665
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -128,6 +128,7 @@ endf
 "
 " Options may contain the following keys:
 "   mode ............ A map mode (see |maparg()|)
+"   remap ........... If true use, |:map| instead of |:noremap|
 "   buffer .......... Make the tinykeymap buffer-local
 "   message ......... An expression that returns a message string (the 
 "                     string will be shortened if necessary
@@ -150,6 +151,7 @@ endf
 function! tinykeymap#EnterMap(name, map, ...) "{{{3
     let options = a:0 >= 1 ? a:1 : {}
     let mode = get(options, 'mode', 'n')
+    let remap = get(options, 'remap', 0)
     let buffer_local = get(options, 'buffer', 0) ? '<buffer>' : ''
     if empty(buffer_local)
         let dict = s:tinykeymaps
@@ -173,8 +175,9 @@ function! tinykeymap#EnterMap(name, map, ...) "{{{3
             throw warning_msg
         endif
     endif
-    let cmd  = mode . "map"
+    let cmd  = mode . (remap ? 'map' : 'noremap')
     let rhs  = s:RHS(mode, ':call tinykeymap#Call('. string(a:name) .')<cr>')
+    " echom "DBG" cmd buffer_local a:map rhs
     exec cmd buffer_local a:map rhs
     let options.map = a:map
     if !has_key(options, 'name')
@@ -365,6 +368,8 @@ function! tinykeymap#Call(name) "{{{3
     endif
     let dict = s:GetDict(a:name)
     let options = dict[s:oid]
+    " TLogVAR dict
+    " TLogVAR options
     let msg = get(options, 'name', a:name)
     let maxlen = float2nr(&columns * 0.8)
     " let maxlen = float2nr((&columns * &cmdheight) * 0.8)
@@ -388,6 +393,8 @@ function! tinykeymap#Call(name) "{{{3
     echo
     let after = get(options, 'after', '')
     let start = get(options, 'start', '')
+    let remap = get(options, 'remap', 0)
+    let mode0 = remap ? 'm' : 'n'
     if !empty(start)
         exec start
     endif
@@ -407,7 +414,7 @@ function! tinykeymap#Call(name) "{{{3
             let key = getchar(0)
             " TLogVAR key
             if type(key) == 0 && key == 0
-                " TLogVAR "No key pressed"
+                " TLogVAR 'No key pressed'
                 if empty(s:count)
                     let message = printf(g:tinykeymap#message_fmt, msg, '')
                 else
@@ -430,7 +437,7 @@ function! tinykeymap#Call(name) "{{{3
                 exec 'sleep' resolution
                 let time += resolution
                 if autokey_msecs > 0 && time > autokey_msecs
-                    call feedkeys(autokey)
+                    call feedkeys(autokey, mode0)
                     let time = 0
                 endif
             elseif type(key) == break_key_type && key == g:tinykeymap#break_key
@@ -452,7 +459,7 @@ function! tinykeymap#Call(name) "{{{3
                 call add(keys, key)
                 let status = s:ProcessKey(a:name, keys, options)
                 " TLogVAR status
-                if status == 0
+                if status == 0 " unhandled key
                     let chars = s:Keys2Chars(keys)
                     if first_run
                         if time > &timeoutlen
@@ -467,19 +474,20 @@ function! tinykeymap#Call(name) "{{{3
                         let mode = 'm'
                     endif
                     let fkeys = join(chars, '')
-                    " TLogVAR time, first_run, fkeys, chars, mode
+                    " TLogVAR time, first_run, keys, fkeys, chars, mode
                     call feedkeys(fkeys, mode)
                     break
                 elseif status == -1 || status == 1 || status == 2
+                    " TLogVAR status
                     if status == -1
                         if !get(options, 'ignore_error', g:tinykeymap#ignore_error)
-                        exec 'throw' s:exception
-                    else
-                        echohl Error
-                        echom s:exception
-                        echohl NONE
-                        exec 'sleep' g:tinykeymap#show_error_timeout
-                    endif
+                            exec 'throw' s:exception
+                        else
+                            echohl Error
+                            echom s:exception
+                            echohl NONE
+                            exec 'sleep' g:tinykeymap#show_error_timeout
+                        endif
                     endif
                     if !empty(after)
                         exec after
