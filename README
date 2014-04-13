@@ -10,18 +10,29 @@ activate a tinykeymap. Users can then use single key shortcuts to
 trigger commands defined with |tinykeymap#Map()|. Pressing an undefined 
 key or <Esc>, deactivates the tinykeymap.
 
-tinykeymap comes with some example maps to make it easier to ...
+tinykeymap comes with the following pre-defined tinykeymaps (see 
+|g:tinykeymap#mapleader| and the related g:tinykeymap#*#map variables for how 
+to customize the key binding):
 
-    buffers ... navigate/operate on buffers
-    diff    ... navigate/operate on |diff|s
+    buffers ... Navigate/operate on buffers
+                Enter map: <Leader>mb
+    diff    ... Navigate/operate on |diff|s
+                Enter map: <Leader>md
     filter  ... "filter" text in a buffer using folds
-    lines   ... navigate/operate on lines (similar to vimscript #4140)
-    loc     ... navigate the |location-list|
-    qfl     ... navigate the |quickfix| list
-    tabs    ... navigate/operate on tabs
-    undo    ... navigate/operate on the undo tree (with optional support for 
+                Enter map: <Leader>mf
+    lines   ... Navigate/operate on lines (similar to vimscript #4140)
+                Enter map: <Leader>ml
+    loc     ... Navigate the |location-list|
+                Enter map: <Leader>mo
+    qfl     ... Navigate the |quickfix| list
+                Enter map: <Leader>mq
+    tabs    ... Navigate/operate on tabs
+                Enter map: gt
+    undo    ... Navigate/operate on the undo tree (with optional support for 
                 vimscript #4177)
-    windows ... navigate/operate on windows
+                Enter map: <Leader>mu
+    windows ... Navigate/operate on windows
+                Enter map: <C-W>
 
 Example definition for a "tabs" tinykeymap (heavily based on Andy 
 Wokula's tabs mode for tinymode): >
@@ -45,21 +56,6 @@ Example use of the above tinykeymap: E.g. pressing gt3n^c2t will:
 A tinykeymap is exited (1) by pressing <Esc> or (2) by timeout (see 
 |g:tinykeymap#timeout|).
 
-tinykeymap comes with the following pre-defined tinykeymaps (see 
-|g:tinykeymap#mapleader| and the related g:tinykeymap#*#map variables for how 
-to customize the key binding):
-
-    tabs    gt         :: Operate on tabs
-    windows <C-W>      :: Operate on windows
-    buffers <Leader>mb :: Operate on buffers
-    diff    <Leader>md :: Make it easier to work with |diff|s
-    filter  <Leader>mf :: Fold lines not matching some pattern (default: word 
-                         under cursor)
-    lines   <Leader>ml :: Operate on lines
-    loc     <Leader>mo :: Operate on the |location-list|
-    qfl     <Leader>mq :: Operate on the |quickfix| list
-    undo    <Leader>mu :: Operate on the |undo| tree
-
 Differences to tinymode:
 
     - tinykeymaps and maps may have options (optional)
@@ -76,6 +72,9 @@ functionality.
 -----------------------------------------------------------------------
 
 Status:  Experimental
+Dependencies:
+  tlib :: http://github.com/tomtom/tlib_vim
+      > git clone git://github.com/tomtom/tlib_vim.git
 Install: See http://github.com/tomtom/vimtlib/blob/master/INSTALL.TXT
 See http://github.com/tomtom for related plugins.
 

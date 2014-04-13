@@ -4,6 +4,8 @@
     "author" : "Tom Link <micathom at gmail com>",
     "maintainer" : "Tom Link <micathom at gmail com>",
     "repository" : {"type": "git", "url": "git://github.com/tomtom/tinykeymap_vim.git"},
-    "dependencies" : {},
-    "description" : ""
+    "dependencies" : {
+    "tlib": {"type": "git", "url": "git://github.com/tomtom/tlib_vim.git"}
+  },
+    "description" : "Tiny, temporary keymaps"
 }
