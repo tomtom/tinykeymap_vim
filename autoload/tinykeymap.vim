@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2014-02-03.
-" @Revision:    665
+" @Last Change: 2014-04-14.
+" @Revision:    674
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -33,7 +33,7 @@ endif
 
 if !exists('g:tinykeymap#resolution')
     " Number of milliseconds to sleep when polling for characters.
-    let g:tinykeymap#resolution = "200m"   "{{{2
+    let g:tinykeymap#resolution = 100   "{{{2
 endif
 
 
@@ -401,6 +401,7 @@ function! tinykeymap#Call(name) "{{{3
     try
         let keys = []
         let resolution = get(options, 'resolution', g:tinykeymap#resolution)
+        let resolution_s = resolution .'m'
         let autokey = get(options, 'autokey', '')
         if empty(autokey)
             let timeout = get(options, 'timeout', g:tinykeymap#timeout)
@@ -434,7 +435,7 @@ function! tinykeymap#Call(name) "{{{3
                 echohl ModeMsg
                 echo message
                 echohl NONE
-                exec 'sleep' resolution
+                exec 'sleep' resolution_s
                 let time += resolution
                 if autokey_msecs > 0 && time > autokey_msecs
                     call feedkeys(autokey, mode0)
