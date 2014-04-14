@@ -3,7 +3,7 @@
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
 " @Last Change: 2014-04-14.
-" @Revision:    674
+" @Revision:    676
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -411,105 +411,112 @@ function! tinykeymap#Call(name) "{{{3
             let autokey_msecs = get(options, 'autokey_msecs', g:tinykeymap#autokey_msecs)
         endif
         let break_key_type = empty(g:tinykeymap#break_key) ? -1 : type(g:tinykeymap#break_key)
+        let update_message = 1
         while timeout == 0 || time < timeout
             let key = getchar(0)
             " TLogVAR key
             if type(key) == 0 && key == 0
                 " TLogVAR 'No key pressed'
-                if empty(s:count)
-                    let message = printf(g:tinykeymap#message_fmt, msg, '')
-                else
-                    let message = printf(g:tinykeymap#message_fmt, msg, ' '. s:count)
-                endif
-                if !empty(messenger)
-                    let mapmsg = eval(messenger)
-                    if g:tinykeymap#show_message == 'statusline'
-                        let mapmsg = s:ShortMessage(mapmsg, &columns)
-                        let &statusline = mapmsg
-                    elseif !empty(mapmsg)
-                        let message .= ' '. mapmsg
+                if update_message
+                    if empty(s:count)
+                        let message = printf(g:tinykeymap#message_fmt, msg, '')
+                    else
+                        let message = printf(g:tinykeymap#message_fmt, msg, ' '. s:count)
                     endif
+                    if !empty(messenger)
+                        let mapmsg = eval(messenger)
+                        if g:tinykeymap#show_message == 'statusline'
+                            let mapmsg = s:ShortMessage(mapmsg, &columns)
+                            let &statusline = mapmsg
+                        elseif !empty(mapmsg)
+                            let message .= ' '. mapmsg
+                        endif
+                    endif
+                    let message = s:ShortMessage(message, maxlen)
+                    redraw
+                    echohl ModeMsg
+                    echo message
+                    echohl NONE
+                    let update_message = 0
                 endif
-                let message = s:ShortMessage(message, maxlen)
-                redraw
-                echohl ModeMsg
-                echo message
-                echohl NONE
                 exec 'sleep' resolution_s
                 let time += resolution
                 if autokey_msecs > 0 && time > autokey_msecs
                     call feedkeys(autokey, mode0)
                     let time = 0
                 endif
-            elseif type(key) == break_key_type && key == g:tinykeymap#break_key
-                " TLogVAR 'g:tinykeymap#break_key', g:tinykeymap#break_key
-                break
-            elseif type(key) == 0 && key == 27
-                " TLogVAR "<esc>"
-                break
-            elseif type(key) == 1 && key ==# "\<F1>"
-                " TLogVAR "<f1>"
-                call s:Help(dict)
-            elseif type(key) == 1 && key ==# "\<Del>"
-                " TLogVAR "<del>"
-                if !empty(s:count)
-                    let s:count = s:count[0 : -2]
-                endif
             else
-                " TLogVAR "other key"
-                call add(keys, key)
-                let status = s:ProcessKey(a:name, keys, options)
-                " TLogVAR status
-                if status == 0 " unhandled key
-                    let chars = s:Keys2Chars(keys)
-                    if first_run
-                        if time > &timeoutlen
-                            let mode = 'm'
-                        else
-                            let map = options.map
-                            let char = s:Map2Char(map)
-                            call insert(chars, char)
-                            let mode = 'n'
-                        endif
-                    else
-                        let mode = 'm'
-                    endif
-                    let fkeys = join(chars, '')
-                    " TLogVAR time, first_run, keys, fkeys, chars, mode
-                    call feedkeys(fkeys, mode)
+                let update_message = 1
+                if type(key) == break_key_type && key == g:tinykeymap#break_key
+                    " TLogVAR 'g:tinykeymap#break_key', g:tinykeymap#break_key
                     break
-                elseif status == -1 || status == 1 || status == 2
-                    " TLogVAR status
-                    if status == -1
-                        if !get(options, 'ignore_error', g:tinykeymap#ignore_error)
-                            exec 'throw' s:exception
-                        else
-                            echohl Error
-                            echom s:exception
-                            echohl NONE
-                            exec 'sleep' g:tinykeymap#show_error_timeout
-                        endif
-                    endif
-                    if !empty(after)
-                        exec after
-                    endif
-                    if status == 2
-                        " handled key + exit
-                        break
-                    else
-                        " handled key
-                        let keys = []
-                        let time = 0
-                        let first_run = 0
-                    endif
-                elseif status == 3 || status == 4
-                    let time = 0
-                    " count
-                    if status == 4
-                        let keys = []
+                elseif type(key) == 0 && key == 27
+                    " TLogVAR "<esc>"
+                    break
+                elseif type(key) == 1 && key ==# "\<F1>"
+                    " TLogVAR "<f1>"
+                    call s:Help(dict)
+                elseif type(key) == 1 && key ==# "\<Del>"
+                    " TLogVAR "<del>"
+                    if !empty(s:count)
+                        let s:count = s:count[0 : -2]
                     endif
                 else
-                    throw "tinykeymap: Internal error: Unhandled status: ". status
+                    " TLogVAR "other key"
+                    call add(keys, key)
+                    let status = s:ProcessKey(a:name, keys, options)
+                    " TLogVAR status
+                    if status == 0 " unhandled key
+                        let chars = s:Keys2Chars(keys)
+                        if first_run
+                            if time > &timeoutlen
+                                let mode = 'm'
+                            else
+                                let map = options.map
+                                let char = s:Map2Char(map)
+                                call insert(chars, char)
+                                let mode = 'n'
+                            endif
+                        else
+                            let mode = 'm'
+                        endif
+                        let fkeys = join(chars, '')
+                        " TLogVAR time, first_run, keys, fkeys, chars, mode
+                        call feedkeys(fkeys, mode)
+                        break
+                    elseif status == -1 || status == 1 || status == 2
+                        " TLogVAR status
+                        if status == -1
+                            if !get(options, 'ignore_error', g:tinykeymap#ignore_error)
+                                exec 'throw' s:exception
+                            else
+                                echohl Error
+                                echom s:exception
+                                echohl NONE
+                                exec 'sleep' g:tinykeymap#show_error_timeout
+                            endif
+                        endif
+                        if !empty(after)
+                            exec after
+                        endif
+                        if status == 2
+                            " handled key + exit
+                            break
+                        else
+                            " handled key
+                            let keys = []
+                            let time = 0
+                            let first_run = 0
+                        endif
+                    elseif status == 3 || status == 4
+                        let time = 0
+                        " count
+                        if status == 4
+                            let keys = []
+                        endif
+                    else
+                        throw "tinykeymap: Internal error: Unhandled status: ". status
+                    endif
                 endif
             endif
         endwh
