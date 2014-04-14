@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
-" @Last Change: 2012-09-09.
-" @Revision:    46
+" @Last Change: 2014-04-14.
+" @Revision:    47
 
 if !exists('g:tinykeymap#map#windows#map')
     " Map leader for the "windows" tinykeymap.
@@ -16,8 +16,8 @@ call tinykeymap#EnterMap("windows", g:tinykeymap#map#windows#map, {
             \ 'name': 'windows mode',
             \ 'message': 'winnr() .": ". bufname("%")'
             \ })
-call tinykeymap#Map('windows', '>', '<count>wincmd >', {'desc': 'Increase width'})
-call tinykeymap#Map('windows', '<', '<count>wincmd <', {'desc': 'Decrease width'})
+call tinykeymap#Map('windows', '>', '<count1>wincmd >', {'desc': 'Increase width'})
+call tinykeymap#Map('windows', '<', '<count1>wincmd <', {'desc': 'Decrease width'})
 call tinykeymap#Map('windows', '|', 'vertical resize <count>', {'desc': 'Set width'})
 call tinykeymap#Map('windows', '+', 'resize +<count1>', {'desc': 'Increase height'})
 call tinykeymap#Map('windows', '-', 'resize -<count1>', {'desc': 'Decrease height'})
