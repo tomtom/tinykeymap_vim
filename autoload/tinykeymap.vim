@@ -33,7 +33,7 @@ endif
 
 if !exists('g:tinykeymap#resolution')
     " Number of milliseconds to sleep when polling for characters.
-    let g:tinykeymap#resolution = 100   "{{{2
+    let g:tinykeymap#resolution = 50   "{{{2
 endif
 
 
