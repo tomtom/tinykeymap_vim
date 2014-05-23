@@ -30,5 +30,5 @@ call tinykeymap#Map("tabs", "<End>", "tablast")
 call tinykeymap#Map("tabs", "c", "tabclose")
 call tinykeymap#Map("tabs", "<Del>", "tabclose")
 call tinykeymap#Map("tabs", "<BS>", "tabclose")
-call tinykeymap#Map("tabs", "p", "call tinykeymap#tabs#Previous()", {'name': 'Previous tab'})
+call tinykeymap#Map("tabs", "p", "call tinykeymap#tabs#Previous()", {'desc': 'Previous tab'})
 
