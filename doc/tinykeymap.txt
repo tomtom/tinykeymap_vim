@@ -176,7 +176,7 @@ g:tinykeymap#timeout           (default: 5000)
     If 0, the tinykeymap never stops due to a timeout.
 
                                                     *g:tinykeymap#resolution*
-g:tinykeymap#resolution        (default: "200m")
+g:tinykeymap#resolution        (default: 50)
     Number of milliseconds to sleep when polling for characters.
 
                                                     *g:tinykeymap#autokey_msecs*
@@ -217,7 +217,7 @@ tinykeymap#Load(maps)
     [maps] is either a single name or a list of names.
 
     Run >
-        :echo globpath(&rtp, 'autoload/tinykeymap/*.vim')
+        :echo globpath(&rtp, 'autoload/tinykeymap/map/*.vim')
 <   for a list of available tinykeymaps.
 
                                                     *tinykeymap#EnterMap()*
