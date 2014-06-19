@@ -94,7 +94,7 @@ let s:oid = "\<esc>options"
 " [maps] is either a single name or a list of names.
 "
 " Run >
-"     :echo globpath(&rtp, 'autoload/tinykeymap/*.vim')
+"     :echo globpath(&rtp, 'autoload/tinykeymap/map/*.vim')
 " for a list of available tinykeymaps.
 function! tinykeymap#Load(maps) "{{{3
     if type(a:maps) == 3
