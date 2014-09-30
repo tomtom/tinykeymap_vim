@@ -1,6 +1,6 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Revision:    29
+" @Revision:    31
 
 
 if !exists('g:tinykeymap#map#tabs#map')
@@ -31,4 +31,8 @@ call tinykeymap#Map("tabs", "c", "tabclose")
 call tinykeymap#Map("tabs", "<Del>", "tabclose")
 call tinykeymap#Map("tabs", "<BS>", "tabclose")
 call tinykeymap#Map("tabs", "p", "call tinykeymap#tabs#Previous()", {'desc': 'Previous tab'})
+
+if exists('g:loaded_tlib') && g:loaded_tlib > 0
+    call tinykeymap#Map("tabs", "s", "tabnew +TScratch!", {'desc': 'Scratch tab', 'exit': 1})
+endif
 

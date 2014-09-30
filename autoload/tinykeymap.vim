@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2014-04-14.
-" @Revision:    676
+" @Last Change: 2014-09-30.
+" @Revision:    678
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -249,8 +249,9 @@ endf
 "
 " Options may contain the following keys:
 "   name ... The key's name (to be displayed in the help)
+"   desc ... The map's description
 "   exit ... If true, exit the current tinykeymap after evaluating 
-"   [expr]
+"            [expr]
 function! tinykeymap#Map(name, map, expr, ...) "{{{3
     let dict = s:GetDict(a:name)
     if empty(dict)
