@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-09.
-" @Last Change: 2012-09-14.
-" @Revision:    25
+" @Last Change: 2014-12-10.
+" @Revision:    26
 
 function! tinykeymap#filter#Process() "{{{3
     if !exists("w:tinykeymaps_exit") || !w:tinykeymaps_exit
@@ -80,7 +80,7 @@ function! s:Fold(from, to) "{{{3
 endf
 
 
-function! tinykeymap#filter#UnkownKey(chars, count) "{{{3
+function! tinykeymap#filter#UnknownKey(chars, count) "{{{3
     let g:tinykeymap#map#filter#rx .= join(a:chars, '')
     return 1
 endf

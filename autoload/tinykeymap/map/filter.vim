@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
-" @Last Change: 2012-09-09.
-" @Revision:    126
+" @Last Change: 2014-12-10.
+" @Revision:    127
 
 if !exists('g:tinykeymap#map#filter#map')
     let g:tinykeymap#map#filter#map = g:tinykeymap#mapleader .'f'   "{{{2
@@ -15,7 +15,7 @@ if !exists('g:tinykeymap#map#filter#options')
                 \ 'start': 'let w:tinykeymaps_fdm = tinykeymap#filter#Start()',
                 \ 'stop': 'call tinykeymap#filter#Stop(w:tinykeymaps_fdm)',
                 \ 'after': 'call tinykeymap#filter#Process()',
-                \ 'unknown_key': 'tinykeymap#filter#UnkownKey',
+                \ 'unknown_key': 'tinykeymap#filter#UnknownKey',
                 \ 'disable_count': 1,
                 \ 'timeout': 0
                 \ }
