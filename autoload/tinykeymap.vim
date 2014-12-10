@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2014-09-30.
-" @Revision:    678
+" @Last Change: 2014-12-10.
+" @Revision:    684
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -132,6 +132,9 @@ endf
 "   buffer .......... Make the tinykeymap buffer-local
 "   message ......... An expression that returns a message string (the 
 "                     string will be shortened if necessary
+"   automap ......... If false, never automatically activate the map 
+"                     (this can be useful, e.g., for filetype-specific 
+"                     maps)
 "   start ........... An expression |:execute|d before entering the map
 "   stop ............ An expression |:execute|d after leaving the map
 "   after ........... An execute |:execute|d after processing a 
@@ -161,27 +164,29 @@ function! tinykeymap#EnterMap(name, map, ...) "{{{3
         endif
         let dict = b:tinykeymaps
     endif
-    if !empty(maparg(a:map, mode)) && maparg(a:map, mode) != ":call tinykeymap#Call('".a:name. "')<CR>"
-        let warning_msg = "tinykeymap: Map already defined: ". a:name ." ". a:map
-        if g:tinykeymap#conflict == 1 || g:tinykeymap#conflict == 2
-            echohl WarningMsg
-            echom warning_msg
-            echohl NONE
-        endif
-        if g:tinykeymap#conflict <= 1
-            let dict[a:name] = {}
-            return
-        elseif g:tinykeymap#conflict == 4
-            throw warning_msg
-        endif
-    endif
-    let cmd  = mode . (remap ? 'map' : 'noremap')
-    let rhs  = s:RHS(mode, ':call tinykeymap#Call('. string(a:name) .')<cr>')
-    " echom "DBG" cmd buffer_local a:map rhs
-    exec cmd buffer_local a:map rhs
-    let options.map = a:map
     if !has_key(options, 'name')
         let options.name = a:name
+    endif
+    if get(options, 'automap', 1)
+        if !empty(maparg(a:map, mode)) && maparg(a:map, mode) != ":call tinykeymap#Call('".a:name. "')<CR>"
+            let warning_msg = "tinykeymap: Map already defined: ". a:name ." ". a:map
+            if g:tinykeymap#conflict == 1 || g:tinykeymap#conflict == 2
+                echohl WarningMsg
+                echom warning_msg
+                echohl NONE
+            endif
+            if g:tinykeymap#conflict <= 1
+                let dict[a:name] = {}
+                return
+            elseif g:tinykeymap#conflict == 4
+                throw warning_msg
+            endif
+        endif
+        let cmd  = mode . (remap ? 'map' : 'noremap')
+        let rhs  = s:RHS(mode, ':call tinykeymap#Call('. string(a:name) .')<cr>')
+        " echom "DBG" cmd buffer_local a:map rhs
+        exec cmd buffer_local a:map rhs
+        let options.map = a:map
     endif
     let dict[a:name] = {s:oid : copy(options)}
 endf
