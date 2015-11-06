@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-09.
-" @Last Change: 2014-12-10.
-" @Revision:    26
+" @Last Change: 2015-11-06.
+" @Revision:    27
 
 function! tinykeymap#filter#Process() "{{{3
     if !exists("w:tinykeymaps_exit") || !w:tinykeymaps_exit
@@ -33,7 +33,7 @@ function! tinykeymap#filter#Process() "{{{3
             call setpos('.', pos)
         endtry
     endif
-    exec printf('3match IncSearch /%s/', g:tinykeymap#map#filter#rx)
+    exec printf('2match IncSearch /%s/', g:tinykeymap#map#filter#rx)
     if exists('g:loaded_tlib')
         call tlib#buffer#ViewLine(line("."))
     else
@@ -68,7 +68,7 @@ function! tinykeymap#filter#Stop(list) "{{{3
         let [fdm, &l:nu, &l:cul, fdl, fen] = a:list
     endif
     " TLogVAR &l:fdm, &l:nu, &l:cul, &l:fdl, &l:fen
-    3match none
+    2match none
     unlet! w:tinykeymaps_exit
 endf
 
