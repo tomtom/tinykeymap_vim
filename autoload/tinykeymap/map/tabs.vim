@@ -1,6 +1,6 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
-" @Revision:    38
+" @Revision:    44
 
 
 if !exists('g:tinykeymap#map#tabs#map')
@@ -22,8 +22,8 @@ call tinykeymap#Map('tabs', 't', 'norm! gt')
 call tinykeymap#Map('tabs', 'T', 'norm! gT') 
 call tinykeymap#Map('tabs', "<Right>", 'norm! gt')
 call tinykeymap#Map('tabs', "<Left>", 'norm! gT')
-call tinykeymap#Map('tabs', "<Up>", 'exec "tabmove" (max([1, tabpagenr() - 1]) - 1)')
-call tinykeymap#Map('tabs', "<Down>", 'exec "tabmove" (max([0, tabpagenr() - 1]) + 1)')
+call tinykeymap#Map('tabs', "<Up>", 'tabmove -')
+call tinykeymap#Map('tabs', "<Down>", 'tabmove +')
 call tinykeymap#Map("tabs", "^", "tabfirst")
 call tinykeymap#Map("tabs", "$", "tablast")
 call tinykeymap#Map("tabs", "<Home>", "tabfirst")
