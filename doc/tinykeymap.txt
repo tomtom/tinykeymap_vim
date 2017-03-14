@@ -113,29 +113,17 @@ Contents~
         tinykeymap#EnterMap ................... |tinykeymap#EnterMap()|
         tinykeymap#Info ....................... |tinykeymap#Info()|
         tinykeymap#Map ........................ |tinykeymap#Map()|
-        tinykeymap#Complete ................... |tinykeymap#Complete()|
-        tinykeymap#PressEnter ................. |tinykeymap#PressEnter()|
-        tinykeymap#filter#Process ............. |tinykeymap#filter#Process()|
-        tinykeymap#filter#Start ............... |tinykeymap#filter#Start()|
-        tinykeymap#filter#Stop ................ |tinykeymap#filter#Stop()|
-        tinykeymap#filter#UnkownKey ........... |tinykeymap#filter#UnkownKey()|
-        tinykeymap#tabs#Previous .............. |tinykeymap#tabs#Previous()|
         g:tinykeymap#map#buffers#map .......... |g:tinykeymap#map#buffers#map|
-        g:tinykeymap#map#windows#map .......... |g:tinykeymap#map#windows#map|
-        g:tinykeymap#map#undo#map ............. |g:tinykeymap#map#undo#map|
-        g:tinykeymap#map#filter#map ........... |g:tinykeymap#map#filter#map|
-        g:tinykeymap#map#diff#map ............. |g:tinykeymap#map#diff#map|
-        g:tinykeymap#map#loc#map .............. |g:tinykeymap#map#loc#map|
         g:tinykeymap#map#loc#bang ............. |g:tinykeymap#map#loc#bang|
-        g:tinykeymap#map#tabs#map ............. |g:tinykeymap#map#tabs#map|
-        g:tinykeymap#map#qfl#map .............. |g:tinykeymap#map#qfl#map|
         g:tinykeymap#map#qfl#bang ............. |g:tinykeymap#map#qfl#bang|
-        g:tinykeymap#map#lines#map ............ |g:tinykeymap#map#lines#map|
+        g:tinykeymap#map#tabs#map ............. |g:tinykeymap#map#tabs#map|
+        g:tinykeymap#map#undo#map ............. |g:tinykeymap#map#undo#map|
+        g:tinykeymap#map#windows#map .......... |g:tinykeymap#map#windows#map|
+        tinykeymap#tabs#Previous .............. |tinykeymap#tabs#Previous()|
 
 
-========================================================================
-plugin/tinykeymap.vim~
-
+------------------------------------------------------------------------
+                                                    *plugin/tinykeymap.vim*
                                                     *:Tinykeymap*
 :Tinykeymap NAME
     Activate a tinykeymap defined with |tinykeymap#EnterMap()|.
@@ -153,9 +141,8 @@ g:tinykeymaps_default          (default: ["*"])
     See also |tinykeymap#Load()|.
 
 
-========================================================================
-autoload/tinykeymap.vim~
-
+------------------------------------------------------------------------
+                                                    *autoload/tinykeymap.vim*
                                                     *g:tinykeymap#mapleader*
 g:tinykeymap#mapleader         (default: '<Leader>m')
     The mapleader for some tinykeymaps. See also |<Leader>|.
@@ -234,6 +221,9 @@ tinykeymap#EnterMap(name, map, ?options={})
       buffer .......... Make the tinykeymap buffer-local
       message ......... An expression that returns a message string (the 
                         string will be shortened if necessary
+      automap ......... If false, never automatically activate the map 
+                        (this can be useful, e.g., for filetype-specific 
+                        maps)
       start ........... An expression |:execute|d before entering the map
       stop ............ An expression |:execute|d after leaving the map
       after ........... An execute |:execute|d after processing a 
@@ -281,59 +271,41 @@ tinykeymap#Map(name, map, expr, ?options={})
 
     Options may contain the following keys:
       name ... The key's name (to be displayed in the help)
+      desc ... The map's description
       exit ... If true, exit the current tinykeymap after evaluating 
-      [expr]
-
-                                                    *tinykeymap#Complete()*
-tinykeymap#Complete(ArgLead, CmdLine, CursorPos)
-
-                                                    *tinykeymap#PressEnter()*
-tinykeymap#PressEnter()
+               [expr]
 
 
-========================================================================
-autoload/tinykeymap/filter.vim~
-
-                                                    *tinykeymap#filter#Process()*
-tinykeymap#filter#Process()
-
-                                                    *tinykeymap#filter#Start()*
-tinykeymap#filter#Start(...)
-
-                                                    *tinykeymap#filter#Stop()*
-tinykeymap#filter#Stop(list)
-
-                                                    *tinykeymap#filter#UnkownKey()*
-tinykeymap#filter#UnkownKey(chars, count)
-
-
-========================================================================
-autoload/tinykeymap/tabs.vim~
-
-                                                    *tinykeymap#tabs#Previous()*
-tinykeymap#tabs#Previous()
-    Contributed by Daniel Hahler
-
-
-========================================================================
-autoload/tinykeymap/map/buffers.vim~
-
+------------------------------------------------------------------------
+                                                    *autoload/tinykeymap/map/buffers.vim*
                                                     *g:tinykeymap#map#buffers#map*
 g:tinykeymap#map#buffers#map   (default: g:tinykeymap#mapleader ."b")
     Map leader for the "buffers" tinykeymap.
 
 
-========================================================================
-autoload/tinykeymap/map/windows.vim~
+------------------------------------------------------------------------
+                                                    *autoload/tinykeymap/map/loc.vim*
+                                                    *g:tinykeymap#map#loc#bang*
+g:tinykeymap#map#loc#bang      (default: &hidden ? '!' : '')
+    String to add after some loc related commands.
 
-                                                    *g:tinykeymap#map#windows#map*
-g:tinykeymap#map#windows#map   (default: "<C-W>")
-    Map leader for the "windows" tinykeymap.
+
+------------------------------------------------------------------------
+                                                    *autoload/tinykeymap/map/qfl.vim*
+                                                    *g:tinykeymap#map#qfl#bang*
+g:tinykeymap#map#qfl#bang      (default: &hidden ? '!' : '')
+    String to add after some qfl related commands.
 
 
-========================================================================
-autoload/tinykeymap/map/undo.vim~
+------------------------------------------------------------------------
+                                                    *autoload/tinykeymap/map/tabs.vim*
+                                                    *g:tinykeymap#map#tabs#map*
+g:tinykeymap#map#tabs#map      (default: "gt")
+    Map leader for the "tabs" tinykeymap.
 
+
+------------------------------------------------------------------------
+                                                    *autoload/tinykeymap/map/undo.vim*
                                                     *g:tinykeymap#map#undo#map*
 g:tinykeymap#map#undo#map      (default: g:tinykeymap#mapleader ."u")
     Map leader for the "undo" tinykeymap.
@@ -341,56 +313,19 @@ g:tinykeymap#map#undo#map      (default: g:tinykeymap#mapleader ."u")
     called when entering the undo tinykeymap.
 
 
-========================================================================
-autoload/tinykeymap/map/filter.vim~
-
-                                                    *g:tinykeymap#map#filter#map*
-g:tinykeymap#map#filter#map    (default: g:tinykeymap#mapleader .'f')
-
-
-========================================================================
-autoload/tinykeymap/map/diff.vim~
-
-                                                    *g:tinykeymap#map#diff#map*
-g:tinykeymap#map#diff#map      (default: g:tinykeymap#mapleader .'d')
+------------------------------------------------------------------------
+                                                    *autoload/tinykeymap/map/windows.vim*
+                                                    *g:tinykeymap#map#windows#map*
+g:tinykeymap#map#windows#map   (default: "<C-W>")
+    Map leader for the "windows" tinykeymap.
 
 
-========================================================================
-autoload/tinykeymap/map/loc.vim~
-
-                                                    *g:tinykeymap#map#loc#map*
-g:tinykeymap#map#loc#map       (default: g:tinykeymap#mapleader .'o')
-
-                                                    *g:tinykeymap#map#loc#bang*
-g:tinykeymap#map#loc#bang      (default: &hidden ? '!' : '')
-    String to add after some loc related commands.
-
-
-========================================================================
-autoload/tinykeymap/map/tabs.vim~
-
-                                                    *g:tinykeymap#map#tabs#map*
-g:tinykeymap#map#tabs#map      (default: "gt")
-    Map leader for the "tabs" tinykeymap.
-
-
-========================================================================
-autoload/tinykeymap/map/qfl.vim~
-
-                                                    *g:tinykeymap#map#qfl#map*
-g:tinykeymap#map#qfl#map       (default: g:tinykeymap#mapleader .'q')
-
-                                                    *g:tinykeymap#map#qfl#bang*
-g:tinykeymap#map#qfl#bang      (default: &hidden ? '!' : '')
-    String to add after some qfl related commands.
-
-
-========================================================================
-autoload/tinykeymap/map/lines.vim~
-
-                                                    *g:tinykeymap#map#lines#map*
-g:tinykeymap#map#lines#map     (default: g:tinykeymap#mapleader .'l')
+------------------------------------------------------------------------
+                                                    *autoload/tinykeymap/tabs.vim*
+                                                    *tinykeymap#tabs#Previous()*
+tinykeymap#tabs#Previous()
+    Contributed by Daniel Hahler
 
 
 
-vim:tw=78:fo=tcq2:isk=!-~,^*,^|,^":ts=8:ft=help:norl:
+vim:tw=78:fo=w2croql:isk=!-~,^*,^|,^":ts=8:ft=help:norl:
