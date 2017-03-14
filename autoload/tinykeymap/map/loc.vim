@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
-" @Last Change: 2014-02-03.
-" @Revision:    56
+" @Last Change: 2017-03-11.
+" @Revision:    58
 
 if !exists('g:tinykeymap#map#loc#map')
     let g:tinykeymap#map#loc#map = g:tinykeymap#mapleader .'o'   "{{{2
@@ -31,7 +31,7 @@ if !exists('g:tinykeymap#map#loc#options')
 endif
 
 
-call tinykeymap#EnterMap("location-list", g:tinykeymap#map#loc#map, g:tinykeymap#map#loc#options)
+call tinykeymap#EnterMap('location-list', g:tinykeymap#map#loc#map, g:tinykeymap#map#loc#options)
 
 call tinykeymap#Map('location-list', '<CR>', 'll'. g:tinykeymap#map#loc#bang .' <count>', {'exit': 1})
 call tinykeymap#Map('location-list', 'n', '<count>lnext'. g:tinykeymap#map#loc#bang)
@@ -40,6 +40,7 @@ call tinykeymap#Map('location-list', 'j', '<count>lnext'. g:tinykeymap#map#loc#b
 call tinykeymap#Map('location-list', 'k', '<count>lNext'. g:tinykeymap#map#loc#bang)
 call tinykeymap#Map('location-list', 'h', '<count>lnfile'. g:tinykeymap#map#loc#bang)
 call tinykeymap#Map('location-list', 'l', '<count>lNfile'. g:tinykeymap#map#loc#bang)
+call tinykeymap#Map('location-list', '1', 'lfirst'. g:tinykeymap#map#loc#bang .' <count>')
 call tinykeymap#Map('location-list', '^', 'lrewind'. g:tinykeymap#map#loc#bang .' <count>')
 call tinykeymap#Map('location-list', '$', 'llast'. g:tinykeymap#map#loc#bang .' <count>')
 call tinykeymap#Map('location-list', '<Down>', '<count>lnext'. g:tinykeymap#map#loc#bang)

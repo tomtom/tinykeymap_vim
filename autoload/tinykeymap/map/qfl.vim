@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-06.
-" @Last Change: 2012-09-14.
-" @Revision:    45
+" @Last Change: 2017-03-11.
+" @Revision:    46
 
 if !exists('g:tinykeymap#map#qfl#map')
     let g:tinykeymap#map#qfl#map = g:tinykeymap#mapleader .'q'   "{{{2
@@ -39,6 +39,7 @@ call tinykeymap#Map('quickfixlist', 'j', '<count>cnext'. g:tinykeymap#map#qfl#ba
 call tinykeymap#Map('quickfixlist', 'k', '<count>cNext'. g:tinykeymap#map#qfl#bang)
 call tinykeymap#Map('quickfixlist', 'h', '<count>cnfile'. g:tinykeymap#map#qfl#bang)
 call tinykeymap#Map('quickfixlist', 'l', '<count>cNfile'. g:tinykeymap#map#qfl#bang)
+call tinykeymap#Map('quickfixlist', '1', 'cfirst'. g:tinykeymap#map#qfl#bang .' <count>')
 call tinykeymap#Map('quickfixlist', '^', 'crewind'. g:tinykeymap#map#qfl#bang .' <count>')
 call tinykeymap#Map('quickfixlist', '$', 'clast'. g:tinykeymap#map#qfl#bang .' <count>')
 call tinykeymap#Map('quickfixlist', '<Down>', '<count>cnext'. g:tinykeymap#map#qfl#bang)
