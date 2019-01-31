@@ -144,7 +144,7 @@ g:tinykeymaps_default          (default: ["*"])
 ------------------------------------------------------------------------
                                                     *autoload/tinykeymap.vim*
                                                     *g:tinykeymap#mapleader*
-g:tinykeymap#mapleader         (default: '<Leader>m')
+g:tinykeymap#mapleader         (default: 'M')
     The mapleader for some tinykeymaps. See also |<Leader>|.
 
                                                     *g:tinykeymap#conflict*
@@ -316,7 +316,7 @@ g:tinykeymap#map#undo#map      (default: g:tinykeymap#mapleader ."u")
 ------------------------------------------------------------------------
                                                     *autoload/tinykeymap/map/windows.vim*
                                                     *g:tinykeymap#map#windows#map*
-g:tinykeymap#map#windows#map   (default: "<C-W>")
+g:tinykeymap#map#windows#map   (default: g:tinykeymap#mapleader . 'w')
     Map leader for the "windows" tinykeymap.
 
 
