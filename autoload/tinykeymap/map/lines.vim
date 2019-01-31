@@ -1,8 +1,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-09-05.
-" @Last Change: 2012-09-14.
-" @Revision:    43
+" @Last Change: 2017-08-22.
+" @Revision:    44
 
 " The lines tinykeymap war originally created for testing multi-key 
 " maps.
@@ -15,8 +15,8 @@ endif
 if !exists('g:tinykeymap#map#lines#options')
     let g:tinykeymap#map#lines#options = {
                 \ 'message': 'printf("<%d,%d>", line("."), col("."))',
-                \ 'start': 'let s:lines_options = [&l:cul, &lz] | let &l:cul = 1 | let &lz = 0',
-                \ 'stop': 'let [&l:cul, &lz] = s:lines_options | unlet s:lines_options',
+                \ 'start': 'let s:lines_options = [&l:cul, &lz, &rnu] | let &l:cul = 1 | let &lz = 0 | setlocal rnu',
+                \ 'stop': 'let [&l:cul, &lz, &rnu] = s:lines_options | unlet s:lines_options',
                 \ }
     if exists('g:loaded_tlib')
         let g:tinykeymap#map#lines#options.after = 'call tlib#buffer#ViewLine(line("."))'
