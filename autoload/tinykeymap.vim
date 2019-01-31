@@ -2,13 +2,13 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2014-12-10.
-" @Revision:    684
+" @Last Change: 2017-09-25.
+" @Revision:    685
 
 
 if !exists('g:tinykeymap#mapleader')
     " The mapleader for some tinykeymaps. See also |<Leader>|.
-    let g:tinykeymap#mapleader = '<Leader>m'   "{{{2
+    let g:tinykeymap#mapleader = 'M'   "{{{2
 endif
 
 
