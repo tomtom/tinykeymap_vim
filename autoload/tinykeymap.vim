@@ -303,6 +303,7 @@ endf
 function! s:Map2Char(key) "{{{3
     let keycode = escape(a:key, '\')
     let keycode = substitute(keycode, '<', '\\<', 'g')
+    let keycode = substitute(keycode, '"', '\\"', 'g')
     let keycode = eval('"'. keycode .'"')
     return keycode
 endf
