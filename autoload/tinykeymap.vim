@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2017-09-25.
-" @Revision:    685
+" @Last Change: 2019-02-21.
+" @Revision:    698
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -33,7 +33,7 @@ endif
 
 if !exists('g:tinykeymap#resolution')
     " Number of milliseconds to sleep when polling for characters.
-    let g:tinykeymap#resolution = 50   "{{{2
+    let g:tinykeymap#resolution = 150   "{{{2
 endif
 
 
@@ -303,7 +303,7 @@ endf
 function! s:Map2Char(key) "{{{3
     let keycode = escape(a:key, '\')
     let keycode = substitute(keycode, '<', '\\<', 'g')
-    let keycode = eval('"'. keycode .'"')
+    let keycode = eval('"'. escape(keycode, '"') .'"')
     return keycode
 endf
 
@@ -452,6 +452,9 @@ function! tinykeymap#Call(name) "{{{3
                     let time = 0
                 endif
             else
+                if g:tinykeymap#debug
+                    echom 'tinykeymap#Call key:' time type(key) string(key) getcharmod()
+                endif
                 let update_message = 1
                 if type(key) == break_key_type && key == g:tinykeymap#break_key
                     " TLogVAR 'g:tinykeymap#break_key', g:tinykeymap#break_key
@@ -472,6 +475,9 @@ function! tinykeymap#Call(name) "{{{3
                     call add(keys, key)
                     let status = s:ProcessKey(a:name, keys, options)
                     " TLogVAR status
+                    if g:tinykeymap#debug
+                        echom 'tinykeymap#Call status:' status getchar(0)
+                    endif
                     if status == 0 " unhandled key
                         let chars = s:Keys2Chars(keys)
                         if first_run
@@ -594,7 +600,7 @@ function! s:ProcessKey(name, keys, options) "{{{3
         let handle_key = s:CheckChars(dict, chars)
         " TLogVAR handle_key
         if g:tinykeymap#debug
-            echom "tinykeymaps: handle_key:" a:name string(a:keys) handle_key
+            echom 'tinykeymap#ProcessKey handle_key:' a:name string(a:keys) handle_key
         endif
         if handle_key > 0
             let def = s:GetMapDef(dict, chars)
@@ -619,7 +625,7 @@ function! s:ProcessKey(name, keys, options) "{{{3
             let s:count = ''
             let expr = substitute(expr, '\V<lt>', '<', 'g')
             if g:tinykeymap#debug
-                echom "tinykeymaps: expr:" expr s:count
+                echom 'tinykeymap#ProcessKey expr:' expr s:count
             endif
             " TLogVAR iterations, expr
             if !empty(expr)
@@ -653,7 +659,7 @@ function! s:ProcessKey(name, keys, options) "{{{3
         endif
         " TLogVAR status
         if g:tinykeymap#debug
-            echom "tinykeymaps: status:" status
+            echom 'tinykeymap#ProcessKey status:' status
         endif
         return status
     catch
