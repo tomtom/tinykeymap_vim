@@ -2,6 +2,7 @@
 :TinykeymapsInfo	tinykeymap.txt	/*:TinykeymapsInfo*
 autoload/tinykeymap.vim	tinykeymap.txt	/*autoload\/tinykeymap.vim*
 autoload/tinykeymap/map/buffers.vim	tinykeymap.txt	/*autoload\/tinykeymap\/map\/buffers.vim*
+autoload/tinykeymap/map/folds.vim	tinykeymap.txt	/*autoload\/tinykeymap\/map\/folds.vim*
 autoload/tinykeymap/map/loc.vim	tinykeymap.txt	/*autoload\/tinykeymap\/map\/loc.vim*
 autoload/tinykeymap/map/qfl.vim	tinykeymap.txt	/*autoload\/tinykeymap\/map\/qfl.vim*
 autoload/tinykeymap/map/tabs.vim	tinykeymap.txt	/*autoload\/tinykeymap\/map\/tabs.vim*
@@ -13,6 +14,7 @@ g:tinykeymap#break_key	tinykeymap.txt	/*g:tinykeymap#break_key*
 g:tinykeymap#conflict	tinykeymap.txt	/*g:tinykeymap#conflict*
 g:tinykeymap#ignore_error	tinykeymap.txt	/*g:tinykeymap#ignore_error*
 g:tinykeymap#map#buffers#map	tinykeymap.txt	/*g:tinykeymap#map#buffers#map*
+g:tinykeymap#map#folds#map	tinykeymap.txt	/*g:tinykeymap#map#folds#map*
 g:tinykeymap#map#loc#bang	tinykeymap.txt	/*g:tinykeymap#map#loc#bang*
 g:tinykeymap#map#qfl#bang	tinykeymap.txt	/*g:tinykeymap#map#qfl#bang*
 g:tinykeymap#map#tabs#map	tinykeymap.txt	/*g:tinykeymap#map#tabs#map*

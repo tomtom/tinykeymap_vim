@@ -114,6 +114,7 @@ Contents~
         tinykeymap#Info ....................... |tinykeymap#Info()|
         tinykeymap#Map ........................ |tinykeymap#Map()|
         g:tinykeymap#map#buffers#map .......... |g:tinykeymap#map#buffers#map|
+        g:tinykeymap#map#folds#map ............ |g:tinykeymap#map#folds#map|
         g:tinykeymap#map#loc#bang ............. |g:tinykeymap#map#loc#bang|
         g:tinykeymap#map#qfl#bang ............. |g:tinykeymap#map#qfl#bang|
         g:tinykeymap#map#tabs#map ............. |g:tinykeymap#map#tabs#map|
@@ -163,7 +164,7 @@ g:tinykeymap#timeout           (default: 5000)
     If 0, the tinykeymap never stops due to a timeout.
 
                                                     *g:tinykeymap#resolution*
-g:tinykeymap#resolution        (default: 50)
+g:tinykeymap#resolution        (default: 150)
     Number of milliseconds to sleep when polling for characters.
 
                                                     *g:tinykeymap#autokey_msecs*
@@ -281,6 +282,13 @@ tinykeymap#Map(name, map, expr, ?options={})
                                                     *g:tinykeymap#map#buffers#map*
 g:tinykeymap#map#buffers#map   (default: g:tinykeymap#mapleader ."b")
     Map leader for the "buffers" tinykeymap.
+
+
+------------------------------------------------------------------------
+                                                    *autoload/tinykeymap/map/folds.vim*
+                                                    *g:tinykeymap#map#folds#map*
+g:tinykeymap#map#folds#map     (default: g:tinykeymap#mapleader ."F")
+    Map leader for the "folds" tinykeymap.
 
 
 ------------------------------------------------------------------------
