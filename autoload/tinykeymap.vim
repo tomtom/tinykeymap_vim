@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-27.
-" @Last Change: 2019-02-21.
-" @Revision:    698
+" @Last Change: 2019-03-08.
+" @Revision:    700
 
 
 if !exists('g:tinykeymap#mapleader')
@@ -301,9 +301,8 @@ endf
 
 
 function! s:Map2Char(key) "{{{3
-    let keycode = escape(a:key, '\')
-    let keycode = substitute(keycode, '<', '\\<', 'g')
-    let keycode = eval('"'. escape(keycode, '"') .'"')
+    let key = escape(a:key, '\<"')
+    let keycode = eval('"'. key .'"')
     return keycode
 endf
 
