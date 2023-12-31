@@ -56,6 +56,7 @@ if !exists('g:tinykeymap#show_message')
     " Where to show a tinykeymap's message. Possible values:
     "     cmdline (default value)
     "     statusline
+    "     hidden
     let g:tinykeymap#show_message = 'cmdline'   "{{{2
 endif
 
@@ -439,9 +440,11 @@ function! tinykeymap#Call(name) "{{{3
                     endif
                     let message = s:ShortMessage(message, maxlen)
                     redraw
-                    echohl ModeMsg
-                    echo message
-                    echohl NONE
+                    if g:tinykeymap#show_message !=# 'hidden'
+                      echohl ModeMsg
+                      echo message
+                      echohl NONE
+                    endif
                     let update_message = 0
                 endif
                 exec 'sleep' resolution_s

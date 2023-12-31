@@ -183,6 +183,7 @@ g:tinykeymap#show_message      (default: 'cmdline')
     Where to show a tinykeymap's message. Possible values:
         cmdline (default value)
         statusline
+        hidden
 
                                                     *g:tinykeymap#ignore_error*
 g:tinykeymap#ignore_error      (default: 1)
