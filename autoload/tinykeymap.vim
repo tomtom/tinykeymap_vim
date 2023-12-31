@@ -401,6 +401,10 @@ function! tinykeymap#Call(name) "{{{3
     let start = get(options, 'start', '')
     let remap = get(options, 'remap', 0)
     let mode0 = remap ? 'm' : 'n'
+    let g:tinykeymaps_active = a:name
+    if exists('#User#TinykeymapsStart')
+      doautocmd User TinykeymapsStart
+    endif
     if !empty(start)
         exec start
     endif
@@ -540,6 +544,10 @@ function! tinykeymap#Call(name) "{{{3
     finally
         let stop = get(options, 'stop', '')
         " TLogVAR stop
+        let g:tinykeymaps_active = ''
+        if exists('#User#TinykeymapsStop')
+          doautocmd User TinykeymapsStop
+        endif
         if !empty(stop)
             exec stop
         endif

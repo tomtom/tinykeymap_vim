@@ -99,6 +99,9 @@ Contents~
         :Tinykeymap ........................... |:Tinykeymap|
         :TinykeymapsInfo ...................... |:TinykeymapsInfo|
         g:tinykeymaps_default ................. |g:tinykeymaps_default|
+        g:tinykeymaps_active. ................. |g:tinykeymaps_active|
+        autocmd User TinykeymapsStart.......... |autocmd User TinykeymapsStart|
+        autocmd User TinykeymapsStop........... |autocmd User TinykeymapsStop|
         g:tinykeymap#mapleader ................ |g:tinykeymap#mapleader|
         g:tinykeymap#conflict ................. |g:tinykeymap#conflict|
         g:tinykeymap#timeout .................. |g:tinykeymap#timeout|
@@ -141,6 +144,20 @@ g:tinykeymaps_default          (default: ["*"])
     tinykeymap load all available tinykeymaps.
     See also |tinykeymap#Load()|.
 
+                                                    *g:tinykeymaps_active*
+g:tinykeymaps_active          (default: '')
+    Contains the currently active tinykeymap's name. Otherwise the
+    variable is empty.
+
+                                                    *autocmd User TinykeymapsStart*
+autocmd User TinykeymapsStart
+    Before entering a key map (and right before setting g:tinykeymaps_active)
+    this event is issued.
+
+                                                    *autocmd User TinykeymapsStop*
+autocmd User TinykeymapsStop
+    After leaving a key map (and right after clearing g:tinykeymaps_active)
+    this event is issued.
 
 ------------------------------------------------------------------------
                                                     *autoload/tinykeymap.vim*

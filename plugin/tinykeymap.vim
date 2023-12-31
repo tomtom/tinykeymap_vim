@@ -36,6 +36,12 @@ if !exists('g:tinykeymaps_default')
     let g:tinykeymaps_default = ["*"]   "{{{2
 endif
 
+if !exists('g:tinykeymaps_active')
+    "Contains the currently active tinykeymap's name. Otherwise the
+    " variable is empty.
+    let g:tinykeymaps_active = ''
+endif
+
 augroup TinyKeyMap
     autocmd!
     if !empty(g:tinykeymaps_default)
