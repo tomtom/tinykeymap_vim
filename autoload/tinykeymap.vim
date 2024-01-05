@@ -56,6 +56,7 @@ if !exists('g:tinykeymap#show_message')
     " Where to show a tinykeymap's message. Possible values:
     "     cmdline (default value)
     "     statusline
+    "     hidden
     let g:tinykeymap#show_message = 'cmdline'   "{{{2
 endif
 
@@ -400,6 +401,10 @@ function! tinykeymap#Call(name) "{{{3
     let start = get(options, 'start', '')
     let remap = get(options, 'remap', 0)
     let mode0 = remap ? 'm' : 'n'
+    let g:tinykeymaps_active = a:name
+    if exists('#User#TinykeymapsStart')
+      doautocmd User TinykeymapsStart
+    endif
     if !empty(start)
         exec start
     endif
@@ -439,9 +444,11 @@ function! tinykeymap#Call(name) "{{{3
                     endif
                     let message = s:ShortMessage(message, maxlen)
                     redraw
-                    echohl ModeMsg
-                    echo message
-                    echohl NONE
+                    if g:tinykeymap#show_message !=# 'hidden'
+                      echohl ModeMsg
+                      echo message
+                      echohl NONE
+                    endif
                     let update_message = 0
                 endif
                 exec 'sleep' resolution_s
@@ -537,6 +544,10 @@ function! tinykeymap#Call(name) "{{{3
     finally
         let stop = get(options, 'stop', '')
         " TLogVAR stop
+        let g:tinykeymaps_active = ''
+        if exists('#User#TinykeymapsStop')
+          doautocmd User TinykeymapsStop
+        endif
         if !empty(stop)
             exec stop
         endif
