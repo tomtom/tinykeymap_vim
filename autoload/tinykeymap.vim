@@ -184,7 +184,7 @@ function! tinykeymap#EnterMap(name, map, ...) "{{{3
             endif
         endif
         let cmd  = mode . (remap ? 'map' : 'noremap')
-        let rhs  = s:RHS(mode, ':call tinykeymap#Call('. string(a:name) .')<cr>')
+        let rhs  = '<Cmd>call tinykeymap#Call('. string(a:name) .')<cr>'
         " echom "DBG" cmd buffer_local a:map rhs
         exec cmd buffer_local a:map rhs
         let options.map = a:map
@@ -333,27 +333,6 @@ function! s:GetDict(name, ...) "{{{3
     else
         throw "tinykeymaps: Unknown map: ". a:name
     endif
-endf
-
-
-function! s:RHS(mode, map) "{{{3
-    if a:mode ==# 'n'
-        let pre  = ''
-        let post = ''
-    elseif a:mode ==# 'i'
-        let pre = '<c-\><c-o>'
-        let post = ''
-    elseif a:mode ==# 'v' || a:mode ==# 'x'
-        let pre = '<c-c>'
-        let post = '<C-\><C-G>'
-    elseif a:mode ==# 'c'
-        let pre = '<c-c>'
-        let post = '<C-\><C-G>'
-    elseif a:mode ==# 'o'
-        let pre = '<c-c>'
-        let post = '<C-\><C-G>'
-    endif
-    return pre . a:map . post
 endf
 
 
