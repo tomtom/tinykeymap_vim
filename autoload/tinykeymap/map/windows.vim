@@ -2,8 +2,8 @@
 " @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
-" @Last Change: 2017-09-25.
-" @Revision:    50
+" @Last Change: 2020-03-24.
+" @Revision:    51
 
 if !exists('g:tinykeymap#map#windows#map')
     " Map leader for the "windows" tinykeymap.
